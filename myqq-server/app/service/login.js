@@ -9,8 +9,10 @@ class LoginService extends Service {
         let userInfo = await this.checkLogin(username);
         if (userInfo.isExist) {
             if (userInfo.userInfo.password === password) {
-                // 签发token
-                const token = this.app.jwt.sign({ userID: userInfo.userInfo.userID }, this.app.config.jwt.secret);
+                // 签发token 有效时长为30day
+                const token = this.app.jwt.sign({ userID: userInfo.userInfo.userID }, this.app.config.jwt.secret, {
+                    expiresIn: '30 days'
+                });
                 return {
                     message: "登录成功",
                     status: true,

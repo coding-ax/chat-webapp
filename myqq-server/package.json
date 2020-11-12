@@ -12,6 +12,7 @@
     "egg-jwt": "^3.1.7",
     "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.11.0",
+    "egg-socket.io": "^4.1.6",
     "js-md5": "^0.7.3"
   },
   "devDependencies": {
@@ -27,9 +28,9 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-myqq-server",
+    "start": "egg-scripts start --daemon --title=egg-server-myqq-server --sticky",
     "stop": "egg-scripts stop --title=egg-server-myqq-server",
-    "dev": "egg-bin dev",
+    "dev": "egg-bin dev --sticky",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",

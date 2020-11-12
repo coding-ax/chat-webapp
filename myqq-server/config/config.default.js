@@ -47,6 +47,20 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [];
 
+  // websocket socket.io配置：
+  config.io = {
+    init: {}, // passed to engine.io
+    namespace: {
+      '/': {
+        connectionMiddleware: [],
+        packetMiddleware: [],
+      },
+      '/example': {
+        connectionMiddleware: [],
+        packetMiddleware: [],
+      },
+    },
+  };
   // mysql配置信息
   config.mysql = {
     // 单数据库信息配置
