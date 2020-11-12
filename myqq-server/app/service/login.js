@@ -1,6 +1,35 @@
 const Service = require('egg').Service;
 const md5 = require('js-md5')
 class LoginService extends Service {
+    async getInfo(username) {
+        return await this.checkLogin(username);
+    }
+    async login(username, password) {
+        // 用于登录的接口
+        let userInfo = await this.checkLogin(username);
+        if (userInfo.isExist) {
+            if (userInfo.userInfo.password === password) {
+                // 签发token
+                const token = this.app.jwt.sign({ userID: userInfo.userInfo.userID }, this.app.config.jwt.secret);
+                return {
+                    message: "登录成功",
+                    status: true,
+                    token
+                }
+            } else {
+                return {
+                    message: "账号或者密码错误",
+                    status: false
+                }
+            }
+
+        } else {
+            return {
+                message: "账号不存在！",
+                status: false
+            }
+        }
+    }
     /**
      *
      * 通过username来检测数据库中是否存在该账户 有则返回对应数据
@@ -60,15 +89,13 @@ class LoginService extends Service {
         }
         // 不存在则写入
         else {
-            let result = await this.addUser(username, password);
+            await this.addUser(username, password);
             return {
                 message: "注册成功",
                 status: true,
-                result
             }
         }
-
-
     }
+
 }
 module.exports = LoginService

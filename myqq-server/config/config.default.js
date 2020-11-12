@@ -39,7 +39,11 @@ module.exports = appInfo => {
   config.jwt = {
     secret: "ax666" // secret key 自定义配置的token加密字符串
   }
-
+  //解除文件上传大小限制
+  config.bodyParser = {
+    jsonLimit: '100mb',
+    formLimit: '100mb',
+  }
   // add your middleware config here
   config.middleware = [];
 
