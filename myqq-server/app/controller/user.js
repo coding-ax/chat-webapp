@@ -8,10 +8,6 @@ class UserController extends Controller {
         const { username, password, date } = ctx.query
         const data = await ctx.service.login.register(username, password);
         ctx.body = {
-            message: "注册成功",
-            username,
-            password,
-            date,
             data
         }
     }

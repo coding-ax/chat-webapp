@@ -24,7 +24,7 @@ module.exports = appInfo => {
     // 配置全局白名单
     domainWhiteList: ['*']
   }
-  
+
   // 配置跨域
   config.cors = {
     origin: "*",
@@ -34,6 +34,11 @@ module.exports = appInfo => {
   // 安装egg-cors来允许跨域 :npm install egg-cors /yarn add egg-cors 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1605081693784_8942';
+
+  //配置jwt
+  config.jwt = {
+    secret: "ax666" // secret key 自定义配置的token加密字符串
+  }
 
   // add your middleware config here
   config.middleware = [];
@@ -58,6 +63,7 @@ module.exports = appInfo => {
     // 是否加载到 agent 上，默认关闭
     agent: false,
   };
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
