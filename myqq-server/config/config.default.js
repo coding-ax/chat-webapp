@@ -12,22 +12,33 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
-  // 去掉csrf提示
+  // 去掉post的时候的安全策略中的csrf提示
   config.security = {
     xframe: {
       enable: false
     },
+    // 去除csrf提示
     csrf: {
       enable: false
-    }
+    },
+    // 配置全局白名单
+    domainWhiteList: ['*']
   }
+  
+  // 配置跨域
+  config.cors = {
+    origin: "*",
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
+  }
+
+  // 安装egg-cors来允许跨域 :npm install egg-cors /yarn add egg-cors 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1605081693784_8942';
 
   // add your middleware config here
   config.middleware = [];
 
-  // mysql配置
+  // mysql配置信息
   config.mysql = {
     // 单数据库信息配置
     client: {
