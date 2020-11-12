@@ -39,7 +39,7 @@ module.exports = appInfo => {
   config.jwt = {
     secret: "ax666" // secret key 自定义配置的token加密字符串
   }
-  //解除文件上传大小限制
+  //提高文件上传大小限制
   config.bodyParser = {
     jsonLimit: '100mb',
     formLimit: '100mb',
@@ -47,20 +47,6 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [];
 
-  // websocket socket.io配置：
-  config.io = {
-    init: {}, // passed to engine.io
-    namespace: {
-      '/': {
-        connectionMiddleware: [],
-        packetMiddleware: [],
-      },
-      '/example': {
-        connectionMiddleware: [],
-        packetMiddleware: [],
-      },
-    },
-  };
   // mysql配置信息
   config.mysql = {
     // 单数据库信息配置
