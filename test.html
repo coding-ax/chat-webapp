@@ -10,10 +10,29 @@
 <body>
     <h1>Echo Test</h1>
     <input id="sendTxt" type="text">
-    <button id="sendBtn">发送</button>
+    <button id="sendBtn" onclick="sendMessage()">发送</button>
     <div id="recv"></div>
-    <script type="text/javascript" src="myqq-server/client.js">
-    </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+<script>
+    var socket = io('http://localhost:7001');
+    socket.on('connect', function (data) {
+        console.log('connect', data)
+    });
+    socket.on('event', function (data) {
+        console.log('event')
+    });
+    socket.on('disconnect', function () {
+        console.log('disconnect')
+    });
+    socket.on('res', function (data) {
+        console.log(data)
+    });
+    let node = document.getElementById('sendTxt')
+    console.log(node)
+    function sendMessage() {
+        socket.emit("res", "1234")
+    }
+</script>
 
 </html>
