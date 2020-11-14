@@ -6,7 +6,7 @@ const Controller = require('egg').Controller;
 class DefaultController extends Controller {
   async groupConnect() {
     await ctx.socket.emit('res', 'ok');
-   
+    
   }
 }
 
