@@ -5,33 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .container {
+            margin: auto;
+            height: 100vh;
+            min-width: 50%;
+            max-width: 100%;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Echo Test</h1>
-    <input id="sendTxt" type="text">
-    <button id="sendBtn" onclick="sendMessage()">发送</button>
-    <div id="recv"></div>
+    <div class="container">
+        <h1>聊天室测试</h1>
+        1cd5ba5f9e55b9f990eb6d333a38954b
+        <br>
+        9cea1e2473aaf49955fa34faac95b3e7
+        <div>
+            <span>userID：</span> <input id="sendTxt1" type="text" onchange="targetChange(event,'userID')">
+        </div>
+        <div>
+            <span>对方userID：</span> <input id="sendTxt2" type="text" value="" onchange="targetChange(event,'target')">
+        </div>
+        <button id="sendBtn" onclick="startConnect()">连接</button>
+        <div>
+            <span>发送内容</span> <input id="sendTxt3" type="text" onchange="targetChange(event,'value')">
+        </div>
+        <button id="sendBtn2" onclick="sendMessage()">发送</button>
+        <div id="recv"></div>
+    </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
 <script>
-    var socket = io('http://localhost:7001');
-    socket.on('connect', function (data) {
-        console.log('connect', data)
-    });
-    socket.on('event', function (data) {
-        console.log('event')
-    });
-    socket.on('disconnect', function () {
-        console.log('disconnect')
-    });
-    socket.on('res', function (data) {
-        console.log(data)
-    });
-    let node = document.getElementById('sendTxt')
-    console.log(node)
+    let data = {
+        userID: '1cd5ba5f9e55b9f990eb6d333a38954b',
+        target: '9cea1e2473aaf49955fa34faac95b3e7',
+        type: 2,
+        value: ''
+    }
+    function startConnect() {
+        var socket = io(`http://localhost:7001?userID=${data.userID}&type=${data.type}&target=${data.target}`);
+        socket.on('connect', function () {
+            console.log('connect')
+            document.getElementById('sendBtn').style.display = 'none'
+        });
+        socket.on('disconnect', function (data) {
+            console.log('disconnect', data)
+            document.getElementById('sendBtn').style.display = 'block'
+        });
+        //获取响应
+        socket.on('res', function (data) {
+            console.log(data)
+            let child = document.createElement("div")
+            child.innerText = data
+            console.log(child)
+            document.getElementById('recv').appendChild(child)
+        });
+        window.socket = socket;
+    }
+
+
     function sendMessage() {
-        socket.emit("res", "1234")
+        window.socket.emit("chat", data)
+    }
+    function targetChange(event, key) {
+        console.log(event.target.value, data)
+        data[key] = event.target.value
     }
 </script>
 
