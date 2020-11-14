@@ -10,7 +10,8 @@ module.exports = app => {
         ctx.socket.on('res', (mes) => {
             console.log(mes)
             ctx.socket.emit("res", mes)
-            ctx.app.io.of('/').to(room).emit('res', mes);
+            // ctx.app.io.of('/').to(room).emit('res', mes);
+           
         })
         // console.log(app)
         await next();
