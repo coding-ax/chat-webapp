@@ -10,34 +10,43 @@ import LoginInput from '../../components/common/LoginInput'
 import Dialog from '../../components/common/Dialog'
 import Loading from '../../components/common/loading'
 import Toast from '../../components/common/Toast'
-import { CSSTransition } from 'react-transition-group'
 function Login(props) {
     // 登录用户名和密码
-    const { loading } = props
-    // 已经登录则跳转主页
+    const { loading, error, history, isLogin } = props
+    const { getLogin, changeLoading, changeIsError, registerUser } = props;
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLoginStatus, setIsLoginStatus] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [toast, setToast] = useState(false);
     const [content, setContent] = useState('');
+    // 设置错误提示事件
     const changeToast = (content) => {
         setContent(content)
         setToast(true)
+        // 两秒后消失
         setTimeout(() => {
             setToast(false)
         }, 2000);
     }
+    // 登录成功的逻辑处理
     useEffect(() => {
         // 已经登录则跳转主页
-        if (props.isLogin) {
+        if (isLogin) {
             setTimeout(() => {
-                props.history.push('/home')
+                history.push('/home')
             }, 500);
         }
-        return () => {
+        // eslint-disable-next-line
+    }, [isLogin])
+    // 中途出错的逻辑处理
+    useEffect(() => {
+        if (error) {
+            changeToast('操作失败')
+            changeIsError(false)
         }
-    }, [props.isLogin])
+        // eslint-disable-next-line
+    }, [error])
     return (
         <LoginStyle>
             {/**标志 */}
@@ -48,7 +57,7 @@ function Login(props) {
 
             {/**登录输入框 */}
             {
-                isLogin && (<div className="input-box">
+                isLoginStatus && (<div className="input-box">
                     <LoginInput xlinkHref='#icon-morentouxiang' type="text" value={username} handleInput={(e) => {
                         setUsername(e)
                     }} placeHolder="请输入用户名" />
@@ -60,7 +69,7 @@ function Login(props) {
 
             {/**注册输入框 */}
             {
-                !isLogin && (<div className="input-box">
+                !isLoginStatus && (<div className="input-box">
                     <LoginInput xlinkHref='#icon-morentouxiang' type="text" value={username} handleInput={(e) => {
                         setUsername(e)
                     }} placeHolder="请输入用户名" />
@@ -75,20 +84,21 @@ function Login(props) {
 
             {/**控制按钮 */}
             <div className='button-go' style={{ animation: loading ? "circle 1s linear infinite" : "" }} onClick={() => {
-                if (isLogin) {
+                if (isLoginStatus) {
                     // 登录 通过redux获取数据
                     if (username && password) {
-                        props.getLogin(username, password)
-                        props.changeLoading(true)
+                        getLogin(username, password)
+                        changeLoading(true)
                     } else {
                         changeToast('信息不足，请完成填写')
                     }
                 } else {
                     // 注册
                     if (username && password && password === confirmPassword) {
-                        
+                        registerUser(username, password)
+                        changeLoading(true);
                     } else {
-                        changeToast('信息不足，请完成填写')
+                        changeToast('请完成填写')
                     }
                 }
             }} >
@@ -97,9 +107,9 @@ function Login(props) {
 
             {/**切换按钮 */}
             <span style={{ marginTop: '1rem', fontSize: "0.8rem", textDecoration: 'underline', color: '#3F91CF' }} onClick={() => {
-                setIsLogin(!isLogin)
+                setIsLoginStatus(!isLoginStatus)
             }}
-            >{isLogin ? '点我注册' : '切换登录'}</span>
+            >{isLoginStatus ? '点我注册' : '切换登录'}</span>
 
             {/**加载提示组件 */}
             <Dialog open={props.loading} title='加载中...'  >
@@ -119,7 +129,8 @@ const mapStateToProps = (state) => {
         token: state.LoginReducer.token,
         userInfo: state.LoginReducer.userInfo,
         loading: state.LoginReducer.loading,
-        isLogin: state.LoginReducer.isLogin
+        isLogin: state.LoginReducer.isLogin,
+        error: state.LoginReducer.isError,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -136,6 +147,12 @@ const mapDispatchToProps = (dispatch) => {
         changeIsLogin: (status) => {
             dispatch(actionCreator.changeIsLoginStatus(status))
         },
+        changeIsError: (status) => {
+            dispatch(actionCreator.changeErrorStatus(status))
+        },
+        registerUser: (username, password) => {
+            dispatch(actionCreator.getRegister(username, password))
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Login)) 

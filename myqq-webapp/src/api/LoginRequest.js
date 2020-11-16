@@ -9,6 +9,16 @@ const Login = (username, password) => {
         }
     })
 }
+const Register = (username,password)=>{
+    return instance({
+        method: 'POST',
+        url: '/user/register',
+        params: {
+            username,
+            password,
+        }
+    })
+}
 const getInfo=(username)=>{
     return instance({
         method: 'GET',
@@ -20,5 +30,6 @@ const getInfo=(username)=>{
 }
 export {
     Login,
-    getInfo
+    getInfo,
+    Register
 }

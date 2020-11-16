@@ -1,6 +1,6 @@
 import { actionType } from './index'
 // 登录函数
-import { Login, getInfo } from '../../../api/LoginRequest'
+import { Login, getInfo, Register } from '../../../api/LoginRequest'
 // 定义action
 // 改变TOKEN
 const changeToken = (data) => (
@@ -37,6 +37,31 @@ const changeError = (data) => (
         data: data
     }
 )
+
+// 注册
+export const getRegister = (username, password) => {
+    return dispatch => {
+        Register(username, password).then(res => {
+            if (res.data.status) {
+                setTimeout(() => {
+                    dispatch(changeLoading(false));
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    dispatch(changeLoading(false));
+                    dispatch(changeError(true));
+                }, 1000);
+            }
+        }).catch(res => {
+            console.log(res)
+            setTimeout(() => {
+                dispatch(changeLoading(false));
+                dispatch(changeError(true));
+            }, 1000);
+        })
+    }
+}
+
 // 编写登录动作 到时候将这个导出 在ui层里面使用
 export const getLogin = (username, password) => {
     //redux-thunk使用
@@ -44,7 +69,6 @@ export const getLogin = (username, password) => {
         Login(username, password).then(res => {
             let token = res.data.token
             // 成功获取token则派发数据 否则返回失败
-            console.log(token)
             if (token) {
                 dispatch(changeToken(token));
                 setTimeout(() => {
@@ -56,9 +80,17 @@ export const getLogin = (username, password) => {
                 console.log(res)
                 setTimeout(() => {
                     dispatch(changeIsLogin(false));
-                    dispatch(changeLoading(false))
+                    dispatch(changeLoading(false));
+                    dispatch(changeError(true));
                 }, 1000);
             }
+        }).catch(res => {
+            console.log(res)
+            setTimeout(() => {
+                dispatch(changeIsLogin(false));
+                dispatch(changeLoading(false));
+                dispatch(changeError(true));
+            }, 1000);
         })
     }
 }
@@ -71,7 +103,8 @@ export const getUserInfo = (username) => {
                 dispatch(changeUserInfo(userInfo))
             }
             else {
-                console.log(res)
+                // 分发错误 业务错误
+                dispatch(changeError(true));
             }
         })
     }
