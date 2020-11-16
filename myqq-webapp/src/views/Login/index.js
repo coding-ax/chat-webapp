@@ -1,18 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 // 导入store相关
-
+import { actionCreator } from './store'
 // 导入CSS
 import { LoginStyle } from './style'
 // 导入组件
 import Icon from '../../components/context/Icon'
 import LoginInput from '../../components/common/LoginInput'
+import Dialog from '../../components/common/Dialog'
+
 function Login(props) {
     // 登录用户名和密码
+    const { loading } = props
+    // 已经登录则跳转主页
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [isLogin, setIsLogin] = useState(true);
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('');
+    useEffect(() => {
+        // 已经登录则跳转主页
+        if (props.isLogin) {
+            setTimeout(() => {
+                props.history.push('/home')
+            }, 500);
+        }
+        return () => {
+        }
+    }, [props.isLogin])
     return (
         <LoginStyle>
             {/**标志 */}
@@ -20,6 +34,7 @@ function Login(props) {
                 <a href="/"><Icon xlinkHref='#icon-crew_react-copy'></Icon></a>
                 <span>MyQQ</span>
             </div>
+
             {/**登录输入框 */}
             {
                 isLogin && (<div className="input-box">
@@ -31,6 +46,7 @@ function Login(props) {
                     }} />
                 </div>)
             }
+
             {/**注册输入框 */}
             {
                 !isLogin && (<div className="input-box">
@@ -45,12 +61,14 @@ function Login(props) {
                     }} />
                 </div>)
             }
+
             {/**控制按钮 */}
-            <div className='button-go' onClick={() => {
+            <div className='button-go' style={{ animation: loading ? "circle 1s linear infinite" : "" }} onClick={() => {
                 if (isLogin) {
                     // 登录 通过redux获取数据
                     if (username && password) {
-
+                        props.getLogin(username, password)
+                        props.changeLoading(true)
                     } else {
                         alert('请完整输入账号和密码')
                     }
@@ -65,10 +83,15 @@ function Login(props) {
             }} >
                 <Icon xlinkHref='#icon-denglu' size="1.3rem" />
             </div>
-            {/**注册按钮 */}
-            <a style={{ marginTop: '1rem', fontSize: "0.8rem", textDecoration: 'underline', color: '#3F91CF' }} onClick={() => {
+
+            {/**切换按钮 */}
+            <span style={{ marginTop: '1rem', fontSize: "0.8rem", textDecoration: 'underline', color: '#3F91CF' }} onClick={() => {
                 setIsLogin(!isLogin)
-            }} >{isLogin ? '点我注册' : '切换登录'}</a>
+            }}
+            >{isLogin ? '点我注册' : '切换登录'}</span>
+
+            {/**html5 元素 ：dialog */}
+            
         </LoginStyle>
     )
 }
@@ -76,24 +99,26 @@ function Login(props) {
 // 配置redux映射关系
 const mapStateToProps = (state) => {
     return {
-        count: state.LoginReducer.value,
-        list: state.LoginReducer.list
+        token: state.LoginReducer.token,
+        userInfo: state.LoginReducer.userInfo,
+        loading: state.LoginReducer.loading,
+        isLogin: state.LoginReducer.isLogin
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        add: () => {
-            dispatch({ type: 'ADD' })
+        getLogin: (username, password) => {
+            dispatch(actionCreator.getLogin(username, password))
         },
-        decrese: () => {
-            dispatch({ type: 'DECRESE' })
+        getInfo: (username) => {
+            dispatch(actionCreator.getUserInfo(username))
         },
-        addList: () => {
-            dispatch({ type: 'ADD_LIST' })
+        changeLoading: (status) => {
+            dispatch(actionCreator.changeLoadingStatus(status))
         },
-        decreseList: () => {
-            dispatch({ type: 'DECRESE_LIST' })
-        }
+        changeIsLogin: (status) => {
+            dispatch(actionCreator.changeIsLoginStatus(status))
+        },
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Login)) 

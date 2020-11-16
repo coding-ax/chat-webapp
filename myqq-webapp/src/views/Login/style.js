@@ -46,6 +46,10 @@ const LoginStyle = styled.div`
         border-radius:50%;
         background-Image: linear-gradient( #f1c40f,40%, #f39c12 );    
     }
+    .active-button{
+        animation:circle 1s linear infinite ;
+    }
+
 `
 export {
     LoginStyle
