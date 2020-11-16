@@ -37,7 +37,13 @@ const changeError = (data) => (
         data: data
     }
 )
-
+// register
+const changeRegister = (data) => (
+    {
+        type: actionType.REGISTER,
+        data: data
+    }
+)
 // 注册
 export const getRegister = (username, password) => {
     return dispatch => {
@@ -45,6 +51,7 @@ export const getRegister = (username, password) => {
             if (res.data.status) {
                 setTimeout(() => {
                     dispatch(changeLoading(false));
+                    dispatch(changeRegister(true))
                 }, 1000);
             } else {
                 setTimeout(() => {
@@ -128,5 +135,12 @@ export const changeIsLoginStatus = (status) => {
 export const changeErrorStatus = (status) => {
     return dispatch => {
         dispatch(changeError(status))
+    }
+}
+
+// 修改register
+export const changeRegisterStatus = (status) => {
+    return dispatch => {
+        dispatch(changeRegister(status))
     }
 }

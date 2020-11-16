@@ -19,7 +19,9 @@ const initialState = {
     // 是否登录成功
     isLogin: false,
     // 是否出现业务逻辑上的失败
-    isError: false
+    isError: false,
+    // 是否注册成功
+    isRegister: false
 }
 // reducer写法： state=initialState指定初始值
 const LoginReducer = function (state = initialState, action) {
@@ -39,6 +41,9 @@ const LoginReducer = function (state = initialState, action) {
                 break;
             case actionType.ERROR:
                 draft.isError = action.data
+                break;
+            case actionType.REGISTER:
+                draft.isRegister = action.data
                 break;
             default:
                 break;

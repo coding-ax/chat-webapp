@@ -8,3 +8,5 @@ export const LOADING = 'LOADING'
 export const ISLOGIN = 'ISLOGIN'
 // 是否触发失败（出现异常）
 export const ERROR = 'ERROR'
+// 是否注册成功
+export const REGISTER = 'REGISTER'

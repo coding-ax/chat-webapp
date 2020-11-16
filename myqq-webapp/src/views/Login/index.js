@@ -12,8 +12,8 @@ import Loading from '../../components/common/loading'
 import Toast from '../../components/common/Toast'
 function Login(props) {
     // 登录用户名和密码
-    const { loading, error, history, isLogin } = props
-    const { getLogin, changeLoading, changeIsError, registerUser } = props;
+    const { loading, error, history, isLogin, register } = props
+    const { getLogin, changeLoading, changeIsError, registerUser, changeRegister } = props;
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [isLoginStatus, setIsLoginStatus] = useState(true);
@@ -42,11 +42,24 @@ function Login(props) {
     // 中途出错的逻辑处理
     useEffect(() => {
         if (error) {
-            changeToast('操作失败')
+            changeToast(isLoginStatus ? '密码或用户名错误' : '用户名已存在')
+            // 重置
             changeIsError(false)
         }
         // eslint-disable-next-line
     }, [error])
+    // 监听注册成功
+    useEffect(() => {
+        if (register) {
+            changeToast('恭喜你！ 注册成功！')
+            changeRegister(false);
+            setTimeout(() => {
+                setIsLoginStatus(true);
+            }, 500);
+        }
+    }, [register])
+
+
     return (
         <LoginStyle>
             {/**标志 */}
@@ -131,6 +144,7 @@ const mapStateToProps = (state) => {
         loading: state.LoginReducer.loading,
         isLogin: state.LoginReducer.isLogin,
         error: state.LoginReducer.isError,
+        register: state.LoginReducer.isRegister
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -152,6 +166,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         registerUser: (username, password) => {
             dispatch(actionCreator.getRegister(username, password))
+        },
+        changeRegister: (status) => {
+            dispatch(actionCreator.changeRegisterStatus(status))
         }
     }
 }
