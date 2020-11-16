@@ -10,6 +10,15 @@ const LoginStyle = styled.div`
     justify-content:center;
     align-items:center;
     /* 设置iconbox */
+    @keyframes circle{
+    from {
+        transform:rotate(0deg)
+    }
+
+    to {
+        transform:rotate(360deg)
+    }
+    }
     .icon-box{
         display:flex;
         flex-direction:row;
@@ -17,6 +26,9 @@ const LoginStyle = styled.div`
         align-items:center;
         font-size:1.5rem;
         // 来一点点偏移
+        a{
+            animation:circle 2s linear infinite ;
+        }
         span{
             position:relative;
             left:0.5rem;
@@ -32,6 +44,7 @@ const LoginStyle = styled.div`
         justify-content:center;
         align-items:center;
         border-radius:50%;
+        background-Image: linear-gradient( #f1c40f,40%, #f39c12 );    
     }
 `
 export {

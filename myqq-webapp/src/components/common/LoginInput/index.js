@@ -53,7 +53,6 @@ function SelfInput(props) {
                         alt="清空"
                         onClick={() => {
                             // 清空
-                            console.log("dd")
                             handleInput("");
                         }}
                     />

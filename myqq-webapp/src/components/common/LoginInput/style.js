@@ -6,6 +6,7 @@ flex-direction:row;
 justify-content:center;
 align-items:center;
 padding-top:1rem;
+animation: showing 0.6s ease;
 .input-container {
     width: 80%;
     height: 50px;
@@ -37,6 +38,7 @@ padding-top:1rem;
     img {
          width: 60%;
     }
+    
 }
 
 .canClear {
@@ -44,16 +46,17 @@ padding-top:1rem;
     padding-right: 10px;
     img {
         width: 80%;
-        animation: showing 0.5s ease;
     }
 }
 @keyframes showing {
     from {
-        opacity: 0;
+        opacity:0;
+        /* transform:translateX(100%); */
     }
 
     to {
-        opacity: 1;
+        opacity:1;
+        /* transform:translateX(0%); */
     }
 }
 `
