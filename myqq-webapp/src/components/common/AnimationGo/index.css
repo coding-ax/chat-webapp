@@ -1,0 +1,89 @@
+/* 入场动画开始 */
+.fade-enter,.fade-appear {
+    transform: translateX(100%);
+}
+
+/*入场动画过程*/
+.fade-enter-active,.fade-appear {
+    transform: translateX(0);
+    transition: transform 0.5s ease;
+}
+
+/*入场动画结束*/
+/* .fade-enter-done {
+    transform: translateX(0);
+} */
+
+/*离场动画开始*/
+.fade-exit {
+    transform: translateX(0);
+}
+
+/*离场动画过程*/
+.fade-exit-active {
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+/*离场动画结束*/
+/* .fade-exit-done {
+    transform: translateX(-100%);
+} */
+
+/*页面第一次加载时的开始状态*/
+/* .fade-appear {
+    transform: translateX(100%);
+} */
+
+/*页面第一次加载时的动画过程*/
+/* .fade-appear-active {
+    transform: translateX(0%);
+    transition: transform 0.5s ease-in;
+} */
+
+
+
+
+/* 反向back */
+/*入场动画开始*/
+.refade-enter,.refade-appear {
+    transform: translateX(-100%);
+}
+
+/*入场动画过程*/
+.refade-enter-active,.refade-appear-active {
+    transform: translateX(0%);
+    transition: transform 0.5s ease;
+}
+
+/*入场动画结束*/
+/* .refade-enter-done {
+    transform: translateX(0%);
+} */
+
+/*离场动画开始*/
+.refade-exit {
+    transform: translateX(0%);
+}
+
+/*离场动画过程*/
+.refade-exit-active {
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+}
+
+/*离场动画结束*/
+/* .refade-exit-done {
+    transform: translateX(100%);
+} */
+
+/*页面第一次加载时的开始状态*/
+/* .refade-appear {
+    transform: translateX(0);
+} */
+
+/*页面第一次加载时的动画过程*/
+/* .refade-appear-active {
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+} */

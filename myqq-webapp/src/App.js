@@ -8,12 +8,16 @@ import { Provider } from 'react-redux'
 import store from './store'
 // 全局css导入 normalize.css
 import NormalizeStyle from './globalStyle/normalize'
+// 导入全局路由动画组件
+import AnimationGo from './components/common/AnimationGo'
 function App() {
   return (
     <Provider store={store} >
       <Router>
         <NormalizeStyle />
-        {renderRoutes(routes)}
+        <AnimationGo>
+          {renderRoutes(routes)}
+        </AnimationGo>
       </Router>
     </Provider>
   );

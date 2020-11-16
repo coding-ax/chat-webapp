@@ -1,4 +1,4 @@
-import  { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 const NormalizeStyle = createGlobalStyle`
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
@@ -171,6 +171,10 @@ textarea {
    * Show the overflow in IE.
    * 1. Show the overflow in Edge.
    */
+input:focus{
+    outline:none
+}
+
 
 button,
 input {
