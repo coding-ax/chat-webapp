@@ -90,8 +90,10 @@ function Login(props) {
             }}
             >{isLogin ? '点我注册' : '切换登录'}</span>
 
-            {/**html5 元素 ：dialog */}
-            
+            {/**手写加载提示组件 */}
+            <Dialog open={!props.loading} title='加载中'  >
+                ddd
+            </Dialog>
         </LoginStyle>
     )
 }
