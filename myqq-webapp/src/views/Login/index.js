@@ -8,7 +8,9 @@ import { LoginStyle } from './style'
 import Icon from '../../components/context/Icon'
 import LoginInput from '../../components/common/LoginInput'
 import Dialog from '../../components/common/Dialog'
-
+import Loading from '../../components/common/loading'
+import Toast from '../../components/common/Toast'
+import { CSSTransition } from 'react-transition-group'
 function Login(props) {
     // 登录用户名和密码
     const { loading } = props
@@ -17,6 +19,15 @@ function Login(props) {
     const [username, setUsername] = useState('');
     const [isLogin, setIsLogin] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [toast, setToast] = useState(false);
+    const [content, setContent] = useState('');
+    const changeToast = (content) => {
+        setContent(content)
+        setToast(true)
+        setTimeout(() => {
+            setToast(false)
+        }, 2000);
+    }
     useEffect(() => {
         // 已经登录则跳转主页
         if (props.isLogin) {
@@ -70,14 +81,14 @@ function Login(props) {
                         props.getLogin(username, password)
                         props.changeLoading(true)
                     } else {
-                        alert('请完整输入账号和密码')
+                        changeToast('信息不足，请完成填写')
                     }
                 } else {
                     // 注册
                     if (username && password && password === confirmPassword) {
-
+                        
                     } else {
-                        alert('信息不足，请完成填写')
+                        changeToast('信息不足，请完成填写')
                     }
                 }
             }} >
@@ -90,11 +101,15 @@ function Login(props) {
             }}
             >{isLogin ? '点我注册' : '切换登录'}</span>
 
-            {/**手写加载提示组件 */}
-            <Dialog open={!props.loading} title='加载中'  >
-                ddd
+            {/**加载提示组件 */}
+            <Dialog open={props.loading} title='加载中...'  >
+                <Loading />
             </Dialog>
+
+            {/** 轻提示组件*/}
+            <Toast open={toast} content={content}></Toast>
         </LoginStyle>
+
     )
 }
 

@@ -37,4 +37,4 @@ function AnimationGo(props) {
   );
 }
 
-export default withRouter(AnimationGo);
+export default withRouter(React.memo(AnimationGo));

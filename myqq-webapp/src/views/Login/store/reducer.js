@@ -5,15 +5,21 @@ import { produce } from 'immer'
 import { actionType } from './index'
 // 初始值
 const initialState = {
+    // jwt
     token: '',
+    // 用户信息
     userInfo: {
         id: null,
         userID: null,
         username: null,
         password: null
     },
+    // 是否正在加载
     loading: false,
-    isLogin: false
+    // 是否登录成功
+    isLogin: false,
+    // 是否出现业务逻辑上的失败
+    isError: false
 }
 // reducer写法： state=initialState指定初始值
 const LoginReducer = function (state = initialState, action) {
@@ -30,6 +36,10 @@ const LoginReducer = function (state = initialState, action) {
                 break;
             case actionType.ISLOGIN:
                 draft.isLogin = action.data
+                break;
+            case actionType.ERROR:
+                draft.isError = action.data
+                break;
             default:
                 break;
         }

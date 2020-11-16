@@ -19,8 +19,5 @@ const Dialog = (props) => {
         </DialogStyle>
     )
 }
-// Dialog.defaultProps = {
-//     open: false,
-//     content: "test"
-// }
-export default Dialog
+
+export default React.memo(Dialog) 

@@ -30,6 +30,13 @@ const changeIsLogin = (data) => (
         data: data
     }
 )
+// error
+const changeError = (data) => (
+    {
+        type: actionType.ERROR,
+        data: data
+    }
+)
 // 编写登录动作 到时候将这个导出 在ui层里面使用
 export const getLogin = (username, password) => {
     //redux-thunk使用
@@ -81,5 +88,12 @@ export const changeLoadingStatus = (status) => {
 export const changeIsLoginStatus = (status) => {
     return dispatch => {
         dispatch(changeIsLogin(status))
+    }
+}
+
+// 修改error
+export const changeErrorStatus = (status) => {
+    return dispatch => {
+        dispatch(changeError(status))
     }
 }

@@ -6,3 +6,5 @@ export const USERINFO = 'USERINFO';
 export const LOADING = 'LOADING'
 // 是否已经登录
 export const ISLOGIN = 'ISLOGIN'
+// 是否触发失败（出现异常）
+export const ERROR = 'ERROR'

@@ -7,4 +7,4 @@ const Icon = React.memo((props) => {
         <svg className="icon" aria-hidden="true" style={{ width:size || '2.5rem', height:size || '2.5rem'}}>
             <use xlinkHref={xlinkHref}></use>
         </svg>)})
-export default Icon
+export default React.memo(Icon) 
