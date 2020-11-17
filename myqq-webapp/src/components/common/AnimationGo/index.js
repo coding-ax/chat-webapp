@@ -16,8 +16,6 @@ const ANIMATION_MAP = {
 };
 function AnimationGo(props) {
   const { children } = props;
-  // console.log(props.history.action);
-  // 根据动作自行判断前进和后退
   return (
     <Route
       render={({ location }) => (
@@ -28,7 +26,7 @@ function AnimationGo(props) {
             })
           }
         >
-          <CSSTransition timeout={500} key={location.pathname}>
+          <CSSTransition timeout={500} key={/**限制二级路由的动画 */location.pathname.substring(0, location.pathname.lastIndexOf('/'))}>
             <Switch location={location}>{children}</Switch>
           </CSSTransition>
         </TransitionGroup>

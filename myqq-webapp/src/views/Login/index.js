@@ -34,7 +34,7 @@ function Login(props) {
         // 已经登录则跳转主页
         if (isLogin) {
             setTimeout(() => {
-                history.push('/home')
+                history.push('/home/message')
             }, 500);
         }
         // eslint-disable-next-line

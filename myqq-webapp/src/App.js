@@ -12,9 +12,10 @@ import NormalizeStyle from './globalStyle/normalize'
 import AnimationGo from './components/common/AnimationGo'
 function App() {
   return (
+
     <Provider store={store} >
+      <NormalizeStyle />
       <Router>
-        <NormalizeStyle />
         <AnimationGo>
           {renderRoutes(routes)}
         </AnimationGo>

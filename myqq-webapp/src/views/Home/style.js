@@ -7,6 +7,7 @@ const NavBar = styled.div`
     justify-content:center;
     align-items:center;
     text-align:center;
+    height:4rem;
     background-color:rgba(245,245,245,0.8);
     width:100%;
     &>*{
