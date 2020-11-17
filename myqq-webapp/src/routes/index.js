@@ -9,14 +9,13 @@ const routes = [
     },
     {
         path: '/home',
-        exact: true,
         component: Home
     },
      // 配置重定向到主页
-    {
+    // {
        
-        path: '*',
-        component: () => <Redirect to="/" />
-    }
+    //     path: '*',
+    //     component: () => <Redirect to="/" />
+    // }
 ]
 export default routes
