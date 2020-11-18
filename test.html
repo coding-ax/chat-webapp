@@ -24,11 +24,23 @@
 <body>
     <div class="container">
         <h1>聊天室测试</h1>
-        1cd5ba5f9e55b9f990eb6d333a38954b
-        <br>
+        <h5>(测试userID和用户token) </h5>
         9cea1e2473aaf49955fa34faac95b3e7
+        <br>
+        <div style="width:50vw;overflow-wrap: break-word;">
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI5Y2VhMWUyNDczYWFmNDk5NTVmYTM0ZmFhYzk1YjNlNyIsImlhdCI6MTYwNTYyOTM5MSwiZXhwIjoxNjA4MjIxMzkxfQ.7pBiX8t3wqZlAaIGviRsxTbqXbdDBXE_Rq49V8DAYTY
+        </div>
+
+        <br>
         <div>
-            <span>userID：</span> <input id="sendTxt1" type="text" onchange="targetChange(event,'userID')">
+            1cd5ba5f9e55b9f990eb6d333a38954b
+        </div>
+        <div style="width:50vw;overflow-wrap: break-word;">
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiIxY2Q1YmE1ZjllNTViOWY5OTBlYjZkMzMzYTM4OTU0YiIsImlhdCI6MTYwNTYyOTQ0NCwiZXhwIjoxNjA4MjIxNDQ0fQ.Kqa2tic5mieXUzbbb5CWMARTUJgmySTP6FyCn3hfW3w
+        </div>
+
+        <div>
+            <span>token：</span> <input id="sendTxt1" type="text" onchange="targetChange(event,'token')">
         </div>
         <div>
             <span>对方userID：</span> <input id="sendTxt2" type="text" value="" onchange="targetChange(event,'target')">
@@ -38,6 +50,7 @@
             <span>发送内容</span> <input id="sendTxt3" type="text" onchange="targetChange(event,'value')">
         </div>
         <button id="sendBtn2" onclick="sendMessage()">发送</button>
+        <div>收到的信息</div>
         <div id="recv"></div>
     </div>
 
@@ -45,13 +58,13 @@
 <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
 <script>
     let data = {
-        userID: '1cd5ba5f9e55b9f990eb6d333a38954b',
         target: '9cea1e2473aaf49955fa34faac95b3e7',
         type: 2,
-        value: ''
+        value: '',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJlOGMzZjY0OTY1MTllY2QwODlhZDliMTM1ZGI1NTg3ZSIsImlhdCI6MTYwNTYyNzI0MiwiZXhwIjoxNjA4MjE5MjQyfQ.tn9_wQQke2FL30deENTxVCq53GbExy-W9cHX1NS36tY'
     }
     function startConnect() {
-        var socket = io(`http://localhost:7001?userID=${data.userID}&type=${data.type}&target=${data.target}`);
+        var socket = io(`http://localhost:7001?token=${data.token}`);
         socket.on('connect', function () {
             console.log('connect')
             document.getElementById('sendBtn').style.display = 'none'
@@ -64,16 +77,21 @@
         socket.on('res', function (data) {
             console.log(data)
             let child = document.createElement("div")
-            child.innerText = data
-            console.log(child)
+            child.innerText = data.message.value
             document.getElementById('recv').appendChild(child)
+        });
+        socket.on('login', function (data) {
+            console.log(data)
+        });
+        socket.on('404', function (data) {
+            console.log(data)
         });
         window.socket = socket;
     }
 
 
     function sendMessage() {
-        window.socket.emit("chat", data)
+        window.socket.emit("chat", { target: data.target, message: { value: data.value, type: 1 } })
     }
     function targetChange(event, key) {
         console.log(event.target.value, data)

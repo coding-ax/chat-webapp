@@ -27,6 +27,7 @@ class UserController extends Controller {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
         const { username, password } = ctx.query
+        console.log(username,password)
         const data = await ctx.service.login.login(username, password);
         ctx.body = {
             data
