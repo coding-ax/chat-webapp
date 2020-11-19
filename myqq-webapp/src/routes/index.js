@@ -8,11 +8,13 @@ const routes = [
     {
         path: '/',
         exact: true,
-        component: Login
+        component: Login,
+        key: 'Login'
     },
     {
         path: '/home',
         component: Home,
+        key: 'Home',
         routes: [
             {
                 path: '/home/',
@@ -39,7 +41,7 @@ const routes = [
     },
     // 配置重定向到主页
     {
-
+        key: '404',
         path: '*',
         component: () => <Redirect to="/" />
     }

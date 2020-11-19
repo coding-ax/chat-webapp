@@ -2,7 +2,7 @@
 const Controller = require('egg').Controller
 
 class UserController extends Controller {
-    // 注册
+    // 注册的路由
     async register() {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
@@ -16,7 +16,7 @@ class UserController extends Controller {
     async getInfo() {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
-        const { username, password } = ctx.query
+        const { username } = ctx.query
         const data = await ctx.service.login.getInfo(username);
         ctx.body = {
             data
@@ -27,7 +27,7 @@ class UserController extends Controller {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
         const { username, password } = ctx.query
-        console.log(username,password)
+        console.log(username, password)
         const data = await ctx.service.login.login(username, password);
         ctx.body = {
             data

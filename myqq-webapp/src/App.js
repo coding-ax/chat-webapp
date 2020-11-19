@@ -17,7 +17,7 @@ function App() {
       <NormalizeStyle />
       <Router>
         <AnimationGo>
-          {renderRoutes(routes)}
+          {renderRoutes(routes, {}, { key: 'test' })}
         </AnimationGo>
       </Router>
     </Provider>

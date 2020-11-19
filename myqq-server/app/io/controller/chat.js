@@ -23,7 +23,7 @@ class DefaultController extends Controller {
     console.log(message)
     // 获取当前房间总socket
     let conn = app.io.of('/')
-    // 找到要发送的目标用户 并进行发送
+    // 找到要发送的目标用户 并进行发送 
     let messageStatus = '1';
     conn.clients(async (error, clients) => {
       if (error) throw error;
@@ -32,13 +32,14 @@ class DefaultController extends Controller {
         console.log(conn.sockets[client].userID, target)
         if (conn.sockets[client].userID === target) {
           await conn.sockets[client].emit('res', { message })
+          // 已经发送
+          messageStatus = '2';
           break;
         }
       }
     });
-    // 做对应数据的存储 但是不需要同步等待
-    // app.mysql.insert('')
-    // 分发响应
+    // 做对应数据的存储 但是不需要同步等待，可以之后直接返回
+    
     await ctx.socket.emit('res', { message: { value: `发送给${target}:${message.value}:发送成功` } });
   }
 }

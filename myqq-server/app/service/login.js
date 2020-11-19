@@ -1,9 +1,26 @@
 const Service = require('egg').Service;
 const md5 = require('js-md5')
 class LoginService extends Service {
+
+    /**
+     *
+     * 返回用户是否存在
+     * @param {String} username
+     * @return {object} 
+     * @memberof LoginService
+     */
     async getInfo(username) {
         return await this.checkLogin(username);
     }
+
+    /**
+     *
+     * 用于登录 获取token
+     * @param {String} username
+     * @param {String} password
+     * @return {message:String,status:Boolean,token?:String} 
+     * @memberof LoginService
+     */
     async login(username, password) {
         // 用于登录的接口
         let userInfo = await this.checkLogin(username);
@@ -32,6 +49,7 @@ class LoginService extends Service {
             }
         }
     }
+
     /**
      *
      * 通过username来检测数据库中是否存在该账户 有则返回对应数据
@@ -54,7 +72,7 @@ class LoginService extends Service {
     }
     /**
      *
-     * 
+     * 添加新用户（用于被注册调用）
      * @param {String} username
      * @param {String} password
      * @memberof LoginService
@@ -70,6 +88,7 @@ class LoginService extends Service {
             result
         }
     }
+    
     /**
      *
      * 负责注册的业务逻辑
