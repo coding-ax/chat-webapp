@@ -1,10 +1,10 @@
-// {app_root}/app/io/controller/default.js
+// 处理好友聊天事件 chat
 'use strict';
 
 const Controller = require('egg').Controller;
 
 class DefaultController extends Controller {
-  async ping() {
+  async chat() {
     const { ctx, app } = this;
     // 所以我们需要的参数变成了： target(目标userID) message:{value:'要发送的内容',type:1} type:1 文字 type：2 图片
     const data = ctx.args[0];
@@ -19,8 +19,6 @@ class DefaultController extends Controller {
     // 抽离参数获取目标发送用户
     // 从message里面获取信息：
     // 连接后就已经获取到UserID并挂载到了ctx.socket上 参见../middleware/auth.js line 25
-    console.log(userID, target)
-    console.log(message)
     // 获取当前房间总socket
     let conn = app.io.of('/')
     // 找到要发送的目标用户 并进行发送 
@@ -37,10 +35,12 @@ class DefaultController extends Controller {
           break;
         }
       }
+      // 做对应数据的存储 
+      ctx.service.message.insertMessage(userID, target, message.value, message.type, messageStatus)
     });
-    // 做对应数据的存储 但是不需要同步等待，可以之后直接返回
-    
-    await ctx.socket.emit('res', { message: { value: `发送给${target}:${message.value}:发送成功` } });
+
+
+    ctx.socket.emit('res', { message: { value: `发送给${target}:${message.value}:发送成功` } });
   }
 }
 

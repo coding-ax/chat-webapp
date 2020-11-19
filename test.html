@@ -46,6 +46,7 @@
             <span>对方userID：</span> <input id="sendTxt2" type="text" value="" onchange="targetChange(event,'target')">
         </div>
         <button id="sendBtn" onclick="startConnect()">连接</button>
+        <button id="sendBtn3" onclick="addFriend()">添加好友</button>
         <div>
             <span>发送内容</span> <input id="sendTxt3" type="text" onchange="targetChange(event,'value')">
         </div>
@@ -86,9 +87,15 @@
         socket.on('404', function (data) {
             console.log(data)
         });
+        socket.on('loginMessage', function (data) {
+            console.log(data)
+        });
         window.socket = socket;
     }
 
+    function addFriend() {
+        window.socket.emit("addFriend", { target: data.target, message: { value: data.value, type: 1 } })
+    }
 
     function sendMessage() {
         window.socket.emit("chat", { target: data.target, message: { value: data.value, type: 1 } })

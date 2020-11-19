@@ -4,8 +4,6 @@ const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index() {
-    // const { ctx } = this;
-    // ctx.body = 'hi, egg';
     const { app, query } = this.ctx;
     // 给谁发, socket连接的id
     const id = query.id;

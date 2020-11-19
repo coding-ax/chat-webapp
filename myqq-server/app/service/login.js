@@ -1,7 +1,9 @@
 const Service = require('egg').Service;
 const md5 = require('js-md5')
 class LoginService extends Service {
-
+    // 定义表格
+    USER_TABLE = 'user'
+    
     /**
      *
      * 返回用户是否存在
@@ -58,7 +60,7 @@ class LoginService extends Service {
      */
     async checkLogin(username) {
         // 检测存在并返回相关数据
-        let userInfo = await this.app.mysql.get('user', { username })
+        let userInfo = await this.app.mysql.get(this.USER_TABLE, { username })
         if (userInfo) {
             return {
                 isExist: true,
@@ -70,6 +72,7 @@ class LoginService extends Service {
             }
         }
     }
+
     /**
      *
      * 添加新用户（用于被注册调用）
@@ -79,7 +82,7 @@ class LoginService extends Service {
      */
     async addUser(username, password) {
         let userID = md5(username);
-        const result = await this.app.mysql.insert('user', {
+        const result = await this.app.mysql.insert(this.USER_TABLE, {
             username,
             password,
             userID
@@ -88,7 +91,7 @@ class LoginService extends Service {
             result
         }
     }
-    
+
     /**
      *
      * 负责注册的业务逻辑

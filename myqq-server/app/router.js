@@ -15,11 +15,15 @@ module.exports = app => {
   // 获取用户信息 参数：username
   router.get('/user/getInfo', app.jwt, controller.user.getInfo);
 
-  // console.log(io)
-  //test
-  // app.io.of('/')
-  io.route('chat', io.controller.chat.ping);
+  // app.io.of('/') 单人聊天处理器
+  io.route('chat', io.controller.chat.chat);
 
-  // app.io.of('/chat')
-  io.of('/chat').route('chat', io.controller.default.ping);
+  // 处理好友添加事件
+  io.route('addFriend', io.controller.friendship.addFriend)
+
+  // 处理同意添加事件
+  io.route('agreeFriend', io.controller.friendship.agreeFriend)
+
+  // 获取好友列表
+  io.route('agreeFriend', io.controller.friendship.getFriendList)
 };

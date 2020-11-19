@@ -4,6 +4,8 @@ const moment = require('moment')
 
 // 继承Service
 class Friends extends Service {
+    USER_TABLE = 'user'
+    FRIEND_TABLE = 'friendship'
     /**
      *
      * 返回所有朋友的userID
@@ -12,7 +14,7 @@ class Friends extends Service {
      * @memberof Friends
      */
     async getFriendList(userID) {
-        const result = await this.app.mysql.select('friendship', {
+        const result = await this.app.mysql.select(this.FRIEND_TABLE, {
             where: {
                 userID
             },
@@ -32,14 +34,14 @@ class Friends extends Service {
     async addFriend(userID, friendID) {
 
         // 检查friendID是否是有效用户 userID不需要检查(来自token必定有效)
-        const check = this.app.mysql.get('user', { userID: friendID })
+        const check = this.app.mysql.get(this.USER_TABLE, { userID: friendID })
         if (!check) {
             return { status: false, message: 'error:不存在friendID' }
         }
         // 验证通过 可以进行插入
         const addTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
         // 插入 需要插入两条
-        await this.app.mysql.insert('friendship', [
+        await this.app.mysql.insert(this.FRIEND_TABLE, [
             {
                 userID,
                 friendID,
@@ -71,7 +73,7 @@ class Friends extends Service {
      */
     async agree(userID, friendID) {
         // 先检查记录存在 检查一条即可
-        const check = this.app.mysql.get('friendship', { userID, friendID });
+        const check = this.app.mysql.get(this.FRIEND_TABLE, { userID, friendID });
         if (!check) {
             return {
                 status: false,

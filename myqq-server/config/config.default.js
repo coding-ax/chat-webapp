@@ -72,7 +72,7 @@ module.exports = appInfo => {
     init: {},
     namespace: {
       '/': {
-        connectionMiddleware: ['auth'],
+        connectionMiddleware: ['auth', 'getMessage'],
         packetMiddleware: [],
       },
       '/chat': {
