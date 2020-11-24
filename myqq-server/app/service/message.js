@@ -49,7 +49,7 @@ class Friends extends Service {
     // 将所有的消息 全部修改为，已经发送 并将其返回
     /**
      *
-     *
+     * 返回未读消息
      * @param {String} recevier
      * @return {{
      *   status:Boolean,
@@ -70,6 +70,13 @@ class Friends extends Service {
                 },
                 orders: [['dispatcher', 'asc'], ['id', 'asc']], // 排序方式
             })
+            // 修改data的阅读状态为2
+            for (const item of data) {
+                await app.mysql.update(this.MESSAGE_TABLE, {
+                    id: item.id,
+                    messageStatus: '2'
+                })
+            }
             return {
                 status: true,
                 data

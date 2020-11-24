@@ -76,18 +76,22 @@
         });
         //获取响应
         socket.on('res', function (data) {
+            // 消息回应
             console.log(data)
             let child = document.createElement("div")
             child.innerText = data.message.value
             document.getElementById('recv').appendChild(child)
         });
         socket.on('login', function (data) {
+            //登录认证成功
             console.log(data)
         });
         socket.on('404', function (data) {
+            // 出现错误
             console.log(data)
         });
         socket.on('loginMessage', function (data) {
+            // loginMessage：登录时获取未读消息
             console.log(data)
         });
         window.socket = socket;

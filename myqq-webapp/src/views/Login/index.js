@@ -37,8 +37,7 @@ function Login(props) {
                 history.push('/home/message')
             }, 500);
         }
-        // eslint-disable-next-line
-    }, [isLogin])
+    }, [isLogin, history])
     // 中途出错的逻辑处理
     useEffect(() => {
         if (error) {
@@ -46,8 +45,7 @@ function Login(props) {
             // 重置
             changeIsError(false)
         }
-        // eslint-disable-next-line
-    }, [error])
+    }, [error, changeIsError, isLoginStatus])
     // 监听注册成功
     useEffect(() => {
         if (register) {
@@ -57,7 +55,7 @@ function Login(props) {
                 setIsLoginStatus(true);
             }, 500);
         }
-    }, [register])
+    }, [register, changeRegister])
 
 
     return (

@@ -14,9 +14,9 @@ const DialogStyle = styled.div`
     color:#000;
     .contain{
         background-color:#fff;
-        width:50%;
+        width:70%;
         border-radius:0.5rem;
-        height:25vh;
+        height:40vh;
         display:flex;
         flex-direction:column;
         text-align:center;

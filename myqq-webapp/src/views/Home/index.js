@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { NavBar } from './style'
 
 // 导入组件
-import { NavLink, HashRouter as Router, withRouter } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
+import Config from '../Config'
 import Icon from '../../components/context/Icon'
+import { Swiper, SwiperSlide } from 'swiper/react'
+// 注意需要 yarn add node-sass@4.14.1
+// 否则装错的话：以下命令删除重装
+//npm uninstall node-sass
+//npm install node-sass@4.14.1
+import 'swiper/swiper.scss'
+
 const tabbarConfig = [
     {
         xlinkHref: '#icon-liaotian',
@@ -35,24 +42,49 @@ function Home(props) {
                 return;
             }
         })
-    }, [])
-    return (<div style={{ position: "fixed", width: '100vw', height: '100vh' }}>
-        <Router>
-            {renderRoutes(props.route.routes)}
-            <NavBar>
-                {tabbarConfig.map((item, index) => (
-                    <div key={item.path} onClick={() => {
-                        props.history.push(item.path)
-                        setCurrentIndex(index)
-                    }}>
-                        {currentIndex === index ? <Icon size='2rem' key={item.path} xlinkHref={item.xlinkHrefActive} /> : <Icon size='2rem' xlinkHref={item.xlinkHref} />}
-                        <div style={{ color: currentIndex === index ? '#3498db' : '#666666' }}>{item.text}</div>
+    }, [props.location.pathname])
+    return (
+        <div style={{ position: "fixed", width: '100vw', height: '100vh' }}>
+            <Swiper
+                style={{ position: "fixed", width: '100vw', height: '100vh' }}
+                //不需要边距
+                spaceBetween={0}
+                //默认在第二页
+                initialSlide={1}
+                slidesPerView={1}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={(event) => console.log('slide change', event)}
+            >
+                {/**设置页 */}
+                <SwiperSlide >
+                    <Config></Config>
+                </SwiperSlide>
+
+                {/**主界面 */}
+                <SwiperSlide>
+                    <div style={{ width: '100vw', height: '100vh', overflow: 'scroll' }}>
+                        <div>
+                            {/**渲染页面 */}
+                            {renderRoutes(props.route.routes)}
+
+                            {/**tabbar导航 */}
+                            <NavBar>
+                                {tabbarConfig.map((item, index) => (
+                                    <div key={item.path} onClick={() => {
+                                        props.history.push(item.path)
+                                        setCurrentIndex(index)
+                                    }}>
+                                        {currentIndex === index ? <Icon size='2rem' key={item.path} xlinkHref={item.xlinkHrefActive} /> : <Icon size='2rem' xlinkHref={item.xlinkHref} />}
+                                        <div style={{ color: currentIndex === index ? '#3498db' : '#666666' }}>{item.text}</div>
+                                    </div>
+                                ))}
+                            </NavBar>
+                        </div>
                     </div>
-                ))}
-            </NavBar>
-        </Router>
+                </SwiperSlide>
+            </Swiper>
+        </div>
 
-
-    </div>)
+    )
 }
 export default React.memo(Home);

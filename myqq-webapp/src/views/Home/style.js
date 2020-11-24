@@ -13,6 +13,20 @@ const NavBar = styled.div`
     &>*{
         flex:1;
         text-decoration:none;
+        &:hover{
+            animation:scale 0.2s linear;
+        }
+    }
+    @keyframes scale{
+        0% {
+            transform:scale(1);
+        }
+        50%{
+            transform:scale(0.5);
+        }
+        100%{
+            transform:scale(1);
+        }
     }
 `
 export { NavBar }

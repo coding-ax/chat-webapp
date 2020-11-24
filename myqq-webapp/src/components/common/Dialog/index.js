@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 // 导入style
 import { DialogStyle } from './style'
 const Dialog = (props) => {

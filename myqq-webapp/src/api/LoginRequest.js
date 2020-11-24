@@ -2,7 +2,7 @@ import { instance } from '../api/instance'
 const Login = (username, password) => {
     return instance({
         method: 'POST',
-        url: '/user/login',
+        url: `/user/login`,
         params: {
             username,
             password,
