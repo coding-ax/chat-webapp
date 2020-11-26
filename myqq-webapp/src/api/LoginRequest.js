@@ -1,29 +1,35 @@
 import { instance } from '../api/instance'
+// 登录函数
 const Login = (username, password) => {
     return instance({
         method: 'POST',
         url: `/user/login`,
-        params: {
+        data: {
             username,
             password,
         }
     })
 }
-const Register = (username,password)=>{
+// 注册
+const Register = (username, password) => {
     return instance({
         method: 'POST',
         url: '/user/register',
-        params: {
+        headers: {
+            'Content-Type': 'x-www-form-urlencoded'
+        },
+        data: {
             username,
             password,
         }
     })
 }
-const getInfo=(username)=>{
+// 获取信息
+const getInfo = (username) => {
     return instance({
         method: 'GET',
         url: '/user/getInfo',
-        params: {
+        data: {
             username,
         }
     })

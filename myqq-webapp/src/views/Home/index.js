@@ -6,6 +6,8 @@ import { renderRoutes } from 'react-router-config'
 import Config from '../Config'
 import Icon from '../../components/context/Icon'
 import { Swiper, SwiperSlide } from 'swiper/react'
+// 导入redux
+import { connect } from 'react-redux'
 // 注意需要 yarn add node-sass@4.14.1
 // 否则装错的话：以下命令删除重装
 //npm uninstall node-sass
@@ -34,15 +36,41 @@ const tabbarConfig = [
 ]
 function Home(props) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    // redux
+    const { token, isLogin } = props;
+    // react-router
+    const { history, location } = props;
+    // 处理tabbar刷新bug
     useEffect(() => {
         // 处理刷新
         tabbarConfig.forEach((item, index) => {
-            if (item.path === props.location.pathname) {
+            if (item.path === location.pathname) {
                 setCurrentIndex(index);
                 return;
             }
         })
-    }, [props.location.pathname])
+    }, [location.pathname])
+
+    // 鉴权：未登录则回到登录
+    useEffect(() => {
+        if (!isLogin) {
+            history.push('/')
+        }
+    }, [isLogin, history])
+
+    // 进行socket连接
+    useEffect(() => {
+        if (token) {
+            console.log(i++);
+            // const socket = getSocket(token);
+            // console.log(socket)
+            // socket.on('login', (socket) => {
+            //     console.log('连接上了')
+            // });
+
+
+        }
+    }, [token])
     return (
         <div style={{ position: "fixed", width: '100vw', height: '100vh' }}>
             <Swiper
@@ -52,8 +80,8 @@ function Home(props) {
                 //默认在第二页
                 initialSlide={1}
                 slidesPerView={1}
-                onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={(event) => console.log('slide change', event)}
+            // onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={(event) => console.log('slide change', event)}
             >
                 {/**设置页 */}
                 <SwiperSlide >
@@ -87,4 +115,12 @@ function Home(props) {
 
     )
 }
-export default React.memo(Home);
+// redux连接
+const mapStateToProps = (state) => {
+    return {
+        token: state.LoginReducer.token,
+        isLogin: state.LoginReducer.isLogin
+    }
+}
+
+export default connect(mapStateToProps)(React.memo(Home));
