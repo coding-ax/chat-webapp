@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 //npm uninstall node-sass
 //npm install node-sass@4.14.1
 import 'swiper/swiper.scss'
-
+import { actionCreator } from './store'
 const tabbarConfig = [
     {
         xlinkHref: '#icon-liaotian',
@@ -36,8 +36,10 @@ const tabbarConfig = [
 ]
 function Home(props) {
     const [currentIndex, setCurrentIndex] = useState(0);
-    // redux
-    const { token, isLogin } = props;
+    // redux state
+    const { token, isLogin, socket } = props;
+    // redux dispatch
+    const { socketConnect } = props;
     // react-router
     const { history, location } = props;
     // 处理tabbar刷新bug
@@ -61,16 +63,26 @@ function Home(props) {
     // 进行socket连接
     useEffect(() => {
         if (token) {
-            console.log(i++);
-            // const socket = getSocket(token);
-            // console.log(socket)
-            // socket.on('login', (socket) => {
-            //     console.log('连接上了')
-            // });
-
-
+            if (socket === null) {
+                socketConnect(token)
+            }
         }
-    }, [token])
+    }, [token, socket, socketConnect])
+
+    // 为socket绑定on事件
+    useEffect(() => {
+        if (socket) {
+            socket.on('login', () => {
+                console.log('登陆成功')
+            })
+            socket.on('res', (data) => {
+                console.log(data)
+            })
+            socket.on('404', (data) => {
+                console.log(data)
+            })
+        }
+    }, [socket])
     return (
         <div style={{ position: "fixed", width: '100vw', height: '100vh' }}>
             <Swiper
@@ -119,8 +131,15 @@ function Home(props) {
 const mapStateToProps = (state) => {
     return {
         token: state.LoginReducer.token,
-        isLogin: state.LoginReducer.isLogin
+        isLogin: state.LoginReducer.isLogin,
+        socket: state.HomeReducer.socket
     }
 }
-
-export default connect(mapStateToProps)(React.memo(Home));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        socketConnect: (token) => {
+            dispatch(actionCreator.socketConnect(token))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Home));

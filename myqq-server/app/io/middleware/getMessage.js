@@ -8,6 +8,5 @@ module.exports = app => {
         const data = await ctx.service.message.updateMessageRead(userID);
         ctx.socket.emit('loginMessage', data)
         await next();
-        console.log("disconnect")
     }
 }

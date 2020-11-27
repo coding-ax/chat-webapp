@@ -20,7 +20,5 @@ const HomeReducer = (state = initialState, action) => {
                 break;
         }
     })
-
-
 }
 export { HomeReducer }

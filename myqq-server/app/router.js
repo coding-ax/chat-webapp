@@ -24,6 +24,8 @@ module.exports = app => {
   // 处理同意添加事件
   io.route('agreeFriend', io.controller.friendship.agreeFriend)
 
+  // 处理信息编辑
+  // io.route('editDetail', () => { })
   // 获取好友列表
-  io.route('agreeFriend', io.controller.friendship.getFriendList)
+  // io.route('getFriend', io.controller.friendship.getFriendList)
 };

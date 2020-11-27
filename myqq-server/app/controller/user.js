@@ -6,7 +6,8 @@ class UserController extends Controller {
     async register() {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
-        const { username, password } = ctx.query
+        // 从data中读取数据方法 request.body
+        const { username, password } = ctx.request.body
         const data = await ctx.service.login.register(username, password);
         ctx.body = {
             data
@@ -16,7 +17,7 @@ class UserController extends Controller {
     async getInfo() {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
-        const { username } = ctx.query
+        const { username } = ctx.request.body
         const data = await ctx.service.login.getInfo(username);
         ctx.body = {
             data
@@ -26,7 +27,7 @@ class UserController extends Controller {
     async login() {
         const { ctx } = this;
         // 获取时间 用户名和密码来进行验证
-        const { username, password } = ctx.query
+        const { username, password } = ctx.request.body
         console.log(username, password)
         const data = await ctx.service.login.login(username, password);
         ctx.body = {

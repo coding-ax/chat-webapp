@@ -45,7 +45,7 @@ const ToastStyle = styled.div`
     color:#fff;
     border-radius:0.5rem;
     background-color:rgba(0,0,0,0.4);
-`
+` 
 const Toast = (props) => {
     const { content, open } = props;
 

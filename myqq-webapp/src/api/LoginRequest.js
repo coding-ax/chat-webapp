@@ -15,12 +15,9 @@ const Register = (username, password) => {
     return instance({
         method: 'POST',
         url: '/user/register',
-        headers: {
-            'Content-Type': 'x-www-form-urlencoded'
-        },
         data: {
             username,
-            password,
+            password, 
         }
     })
 }
