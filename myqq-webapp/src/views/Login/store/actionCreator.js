@@ -9,13 +9,6 @@ const changeToken = (data) => (
         data: data
     }
 )
-// 改变userINFO
-const changeUserInfo = (data) => (
-    {
-        type: actionType.USERINFO,
-        data: data
-    }
-)
 // 增加loading
 const changeLoading = (data) => (
     {
@@ -98,21 +91,6 @@ export const getLogin = (username, password) => {
                 dispatch(changeLoading(false));
                 dispatch(changeError(true));
             }, 1000);
-        })
-    }
-}
-// 获取用户信息
-export const getUserInfo = (username) => {
-    return dispatch => {
-        getInfo(username).then(res => {
-            let userInfo = res.data
-            if (userInfo) {
-                dispatch(changeUserInfo(userInfo))
-            }
-            else {
-                // 分发错误 业务错误
-                dispatch(changeError(true));
-            }
         })
     }
 }

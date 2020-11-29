@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { NavBar } from './style'
 
-// 导入组件
+// 导入所涉及到的组件
+import { NavBar } from './style'
 import { renderRoutes } from 'react-router-config'
 import Config from '../Config'
 import Icon from '../../components/context/Icon'
 import { Swiper, SwiperSlide } from 'swiper/react'
-// 导入redux
-import { connect } from 'react-redux'
-// 注意需要 yarn add node-sass@4.14.1
-// 否则装错的话：以下命令删除重装
-//npm uninstall node-sass
-//npm install node-sass@4.14.1
+
+// 导入对象sass
+/* 
+** 注意需要 yarn add node-sass@4.14.1
+** 否则装错的话需要通过以下命令删除重装
+** npm uninstall node-sass
+** npm install node-sass@4.14.1
+*/
 import 'swiper/swiper.scss'
+
+// 导入redux相关组件数据
+import { connect } from 'react-redux'
 import { actionCreator } from './store'
+
+
+// 导入全局socket监听器
+import { socketListener } from '../../store/socketHandle'
+
+// 定义tabbar配置
 const tabbarConfig = [
     {
         xlinkHref: '#icon-liaotian',
@@ -34,7 +45,9 @@ const tabbarConfig = [
         text: 'zoom'
     }
 ]
+
 function Home(props) {
+    // state
     const [currentIndex, setCurrentIndex] = useState(0);
     // redux state
     const { token, isLogin, socket } = props;
@@ -72,15 +85,7 @@ function Home(props) {
     // 为socket绑定on事件
     useEffect(() => {
         if (socket) {
-            socket.on('login', () => {
-                console.log('登陆成功')
-            })
-            socket.on('res', (data) => {
-                console.log(data)
-            })
-            socket.on('404', (data) => {
-                console.log(data)
-            })
+            socketListener(socket)
         }
     }, [socket])
     return (
@@ -111,6 +116,7 @@ function Home(props) {
                             <NavBar>
                                 {tabbarConfig.map((item, index) => (
                                     <div key={item.path} onClick={() => {
+                                        /** 进行tabbar的切换 */
                                         props.history.push(item.path)
                                         setCurrentIndex(index)
                                     }}>

@@ -5,7 +5,16 @@ import { actionType } from './index'
 // 初始值
 const initialState = {
     //socket
-    socket: null
+    socket: null,
+    // user信息
+    userInfo: {
+        avator: "https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png",
+        birthday: null,
+        gender: null,
+        nickName: null,
+        signature: null,
+        userID: null
+    }
 }
 // 编写reducer
 const HomeReducer = (state = initialState, action) => {
@@ -14,8 +23,9 @@ const HomeReducer = (state = initialState, action) => {
             case actionType.SOCKET:
                 draft.socket = action.data
                 break;
-            // case ACTION_TYPE_2:
-            //     break
+            case actionType.USERINFO:
+                draft.userInfo = action.data
+                break;
             default:
                 break;
         }

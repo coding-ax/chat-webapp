@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserDetail from '../../components/context/userDetail'
 import MessageBox from '../../components/context/messageBox'
 import Icon from '../../components/context/Icon'
 import Nav from '../../components/common/Nav'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 const BottomButton = styled.div`
    display: flex;
    justify-content: center;
@@ -14,6 +15,17 @@ const BottomButton = styled.div`
    font-size:1.1rem;
 `
 const Config = (props) => {
+    const { socket } = props;
+    // eslint-disable-next-line
+    const { userInfo } = props;
+    useEffect(() => {
+        if (socket) {
+            socket.emit('getDetail', {});
+        } else {
+            console.log('error,socket为null')
+        }
+        // }, [socket,message])
+    }, [socket])
     return (
         <div>
             {/**导航栏 */}
@@ -23,22 +35,28 @@ const Config = (props) => {
                 <span></span>
             </Nav>
             {/**头像区域 */}
-            <UserDetail nickName="暮雪离歌" userName='xgp'></UserDetail>
+            <UserDetail nickName={userInfo.nickName} imgSrc={userInfo.avator} userName={userInfo.nickName}></UserDetail>
             {/**信息显示区域 */}
             <MessageBox title="个性签名" xlinkHref='#icon-qianming1' >
-                <span>你步履匆忙，来不及疲倦</span>
+                <span>{userInfo.signature}</span>
             </MessageBox>
             <MessageBox title="性别" xlinkHref="#icon-xingbie1"  >
-                <Icon size={'1.5rem'} xlinkHref='#icon-nv'></Icon>
+                <Icon size={'1.5rem'} xlinkHref={userInfo.gender === 0 ? '#icon-nv' : '#icon-xingbie'}></Icon>
             </MessageBox>
             <MessageBox title="生日" xlinkHref='#icon-shengri' >
-                <span>2000-09-08</span>
+                <span>{new Date(userInfo.birthday).toLocaleDateString()}</span>
             </MessageBox>
             {/** bottom设置跳转*/}
             <BottomButton>
                 <span>修改资料</span>
             </BottomButton>
         </div>
-        )
+    )
 }
-export default React.memo(Config)
+const mapStateToProps = (state) => {
+    return {
+        socket: state.HomeReducer.socket,
+        userInfo: state.HomeReducer.userInfo
+    }
+}
+export default connect(mapStateToProps)(React.memo(Config)) 

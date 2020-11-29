@@ -7,13 +7,6 @@ import { actionType } from './index'
 const initialState = {
     // jwt
     token: '',
-    // 用户信息
-    userInfo: {
-        id: null,
-        userID: null,
-        username: null,
-        password: null
-    },
     // 是否正在加载
     loading: false,
     // 是否登录成功
@@ -29,9 +22,6 @@ const LoginReducer = function (state = initialState, action) {
         switch (action.type) {
             case actionType.TOKEN:
                 draft.token = action.data
-                break;
-            case actionType.USERINFO:
-                draft.userInfo = action.data
                 break;
             case actionType.LOADING:
                 draft.loading = action.data
