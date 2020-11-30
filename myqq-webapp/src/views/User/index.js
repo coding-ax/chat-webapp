@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 // 组件
@@ -6,9 +6,12 @@ import UserDetail from '../../components/context/userDetail'
 import MessageBox from '../../components/context/messageBox'
 import Icon from '../../components/context/Icon'
 import Nav from '../../components/common/Nav'
+import Transition from '../../components/common/Transition'
+import EditPage from '../EditPage'
 // styled
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { getDetail } from '../../store/socketHandle/action'
 const BottomButton = styled.div`
    display: flex;
    justify-content: center;
@@ -19,6 +22,7 @@ const BottomButton = styled.div`
    font-size:1.1rem;
 `
 const Config = (props) => {
+    const [show, setShow] = useState(false)
     const { socket } = props;
     const { userInfo } = props;
     // history
@@ -27,9 +31,11 @@ const Config = (props) => {
     // 连接后就马上请求信息
     useEffect(() => {
         if (socket) {
-            socket.emit('getDetail', {});
+            getDetail(socket)
         }
     }, [socket])
+
+
 
     return (
         <div>
@@ -58,15 +64,17 @@ const Config = (props) => {
                 {/** bottom设置修改资料框的跳出*/}
                 <BottomButton>
                     <span onClick={() => {
-                        history.push('/edit')
+                        setShow(true)
                     }}>修改资料</span>
                 </BottomButton>
             </div>
 
             {/**信息设置 */}
-            <div>
-
-            </div>
+            <Transition show={show}>
+                <EditPage onExit={() => {
+                    setShow(false)
+                }}></EditPage>
+            </Transition>
         </div>
     )
 }

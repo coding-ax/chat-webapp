@@ -8,19 +8,23 @@ export const socketListener = (socket) => {
     if (socket) {
         // 监听res
         socket.on('res', (data) => {
-            console.log("监听自socketListener", data)
+            console.log(data)
         })
         // 监听登录响应
         socket.on('login', (data) => {
-            console.log("监听自socketListener", data)
+            console.log(data)
         })
         // 设置404错误监听
         socket.on('404', (data) => {
-            console.log("监听自socketListener", data)
+            console.log(data)
+        })
+        // 设置错误监听
+        socket.on('error', (data) => {
+            console.log(data)
         })
         // 设置用户数据
         socket.on('detail', (data) => {
-            console.log("监听自socketListener", data)
+            console.log(data)
             // 派发message
             dispatch(actionCreator.userInfoChange(data.message))
         })

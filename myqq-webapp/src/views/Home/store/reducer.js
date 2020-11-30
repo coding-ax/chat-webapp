@@ -9,11 +9,11 @@ const initialState = {
     // user信息
     userInfo: {
         avator: "https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png",
-        birthday: null,
-        gender: null,
-        nickName: null,
-        signature: null,
-        userID: null
+        birthday: '',
+        gender: 1,
+        nickName: '',
+        signature: '',
+        userID: ''
     }
 }
 // 编写reducer
