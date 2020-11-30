@@ -1,6 +1,6 @@
 import { actionType } from './index'
 // 登录函数
-import { Login, getInfo, Register } from '../../../api/LoginRequest'
+import { Login, Register } from '../../../api/LoginRequest'
 // 定义action
 // 改变TOKEN
 const changeToken = (data) => (

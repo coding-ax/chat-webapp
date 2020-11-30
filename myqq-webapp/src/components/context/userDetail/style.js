@@ -19,6 +19,7 @@ text-align:left;
     margin-top:0.2rem;
     span{
         color:#888888;
+        font-size:0.5rem;
     }
 }
 `

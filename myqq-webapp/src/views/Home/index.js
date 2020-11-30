@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react'
 // 导入所涉及到的组件
 import { NavBar } from './style'
 import { renderRoutes } from 'react-router-config'
-import Config from '../Config'
+import User from '../User'
 import Icon from '../../components/context/Icon'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
 // 导入对象sass
 /* 
 ** 注意需要 yarn add node-sass@4.14.1
@@ -45,6 +44,7 @@ const tabbarConfig = [
         text: 'zoom'
     }
 ]
+
 
 function Home(props) {
     // state
@@ -97,12 +97,10 @@ function Home(props) {
                 //默认在第二页
                 initialSlide={1}
                 slidesPerView={1}
-            // onSwiper={(swiper) => console.log(swiper)}
-            // onSlideChange={(event) => console.log('slide change', event)}
             >
                 {/**设置页 */}
                 <SwiperSlide >
-                    <Config></Config>
+                    <User></User>
                 </SwiperSlide>
 
                 {/**主界面 */}

@@ -11,7 +11,7 @@ const UserDetail = (props) => {
             </div>
             <MessageContain style={{ width: '80%' }}>
                 <div className="title">{nickName}</div>
-                <div className='number'>mq号：<span>{userName}</span></div>
+                <div className='number'>ID：<span>{userName}</span></div>
             </MessageContain>
         </UserContain>
     )

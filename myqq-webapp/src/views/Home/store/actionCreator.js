@@ -26,9 +26,7 @@ export const socketConnect = (token) => {
 }
 // 设置userInfo
 export const userInfoChange = userInfo => {
-    console.log('???')
     return dispatch => {
-        console.log(dispatch)
         // userInfo传入就是最后的结果 
         dispatch(changeUserInfo(userInfo))
     }
