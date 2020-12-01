@@ -12,7 +12,7 @@ class DefaultController extends Controller {
         const { target } = data;
         this.ctx.socket.emit('res', { message: ctx.socket.userID, value: data })
     }
-    // 同意
+    // 同意添加
     async agreeFriend() {
 
     }

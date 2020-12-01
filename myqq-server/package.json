@@ -15,6 +15,7 @@
     "egg-socket.io": "^4.1.6",
     "js-md5": "^0.7.3",
     "moment": "^2.29.1",
+    "qiniu": "^7.3.2",
     "socket.io-client": "^3.0.1"
   },
   "devDependencies": {

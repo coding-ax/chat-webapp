@@ -56,7 +56,7 @@ const Config = (props) => {
                     <span>{userInfo.signature}</span>
                 </MessageBox>
                 <MessageBox title="性别" xlinkHref="#icon-xingbie1"  >
-                    <Icon size={'1.5rem'} xlinkHref={userInfo.gender === 0 ? '#icon-nv' : '#icon-xingbie'}></Icon>
+                    <Icon size={'1.5rem'} xlinkHref={String(userInfo.gender) === "0" ? '#icon-nv' : '#icon-xingbie'}></Icon>
                 </MessageBox>
                 <MessageBox title="生日" xlinkHref='#icon-shengri' >
                     <span>{new Date(userInfo.birthday).toLocaleDateString()}</span>

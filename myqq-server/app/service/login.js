@@ -3,7 +3,7 @@ const md5 = require('js-md5')
 class LoginService extends Service {
     // 定义表格
     USER_TABLE = 'user'
-    
+    USER_DETAIL_TABLE = 'user_detail'
     /**
      *
      * 返回用户是否存在
@@ -82,10 +82,15 @@ class LoginService extends Service {
      */
     async addUser(username, password) {
         let userID = md5(username);
+        // 同时插入user_detail表
         const result = await this.app.mysql.insert(this.USER_TABLE, {
             username,
             password,
             userID
+        })
+        this.app.mysql.insert(this.USER_DETAIL_TABLE, {
+            userID,
+            avator: "https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png"
         })
         return {
             result
