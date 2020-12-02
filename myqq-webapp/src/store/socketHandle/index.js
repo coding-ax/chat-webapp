@@ -28,5 +28,14 @@ export const socketListener = (socket) => {
             // 派发message
             dispatch(actionCreator.userInfoChange(data.message))
         })
+        // 监听好友列表名单
+        socket.on('friendList', (data) => {
+            console.log(data)
+        })
+        // 监听好友搜索结果
+        socket.on('searchFriend', (data) => {
+            console.log(data)
+            dispatch(actionCreator.searchFriendListChange(data.message))
+        })
     }
 }

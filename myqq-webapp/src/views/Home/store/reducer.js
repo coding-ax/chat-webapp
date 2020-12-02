@@ -14,7 +14,10 @@ const initialState = {
         nickName: '',
         signature: '',
         userID: ''
-    }
+    },
+    // searchFriendList
+    friendList: [],
+    searchFriendList: []
 }
 // 编写reducer
 const HomeReducer = (state = initialState, action) => {
@@ -25,6 +28,12 @@ const HomeReducer = (state = initialState, action) => {
                 break;
             case actionType.USERINFO:
                 draft.userInfo = action.data
+                break;
+            case actionType.FRIENDLIST:
+                draft.friendList = action.data
+                break;
+            case actionType.SEARCHFRIENDLIST:
+                draft.searchFriendList = action.data
                 break;
             default:
                 break;

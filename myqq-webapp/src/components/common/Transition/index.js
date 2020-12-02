@@ -1,5 +1,5 @@
 import React from 'react'
-import './test.css'
+import './style.css'
 import { CSSTransition } from 'react-transition-group'
 const Transition = props => {
     const { show } = props;
@@ -10,7 +10,7 @@ const Transition = props => {
             classNames='showBox'
             unmountOnExit
         >
-            <div style={{ position: "fixed", left: 0, right: 0, top: 0, bottom: 0, overflow: 'scroll', zIndex: 3, backgroundColor: '#fff' }}>
+            <div style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, overflow: 'scroll', zIndex: 3, backgroundColor: '#fff' }}>
                 {props.children}
             </div>
         </CSSTransition>

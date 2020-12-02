@@ -12,9 +12,9 @@ import Icon from '../../context/Icon'
  */
 function SelfInput(props) {
     // 默认属性
-    const { xlinkHref, placeHolder, type, maxLength } = props;
+    const { xlinkHref, placeHolder, type, maxLength, value } = props;
     // hanleInput 和 value分别处理值的更新
-    const { handleInput, value } = props;
+    const { handleInput, handleIconClick } = props;
     const [isInput, setIsInput] = useState(false);
     useEffect(() => {
         if (value !== "") {
@@ -26,7 +26,9 @@ function SelfInput(props) {
     return (
         <InputStyle>
             <div className="input-container">
-                <div className="img-box">
+                <div className="img-box" onClick={() => {
+                    if (handleIconClick) handleIconClick()
+                }}>
                     <Icon xlinkHref={xlinkHref} size='1.7rem' />
                 </div>
                 <div className="input-area">
@@ -38,7 +40,6 @@ function SelfInput(props) {
                         onChange={(e) => {
                             // 调用父组件方法
                             if (handleInput) handleInput(e.target.value);
-                            else return;
                         }}
                         maxLength={maxLength || 16}
                     />

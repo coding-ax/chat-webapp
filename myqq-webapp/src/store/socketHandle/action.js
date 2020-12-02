@@ -12,3 +12,19 @@ export const editUserDetail = (socket, userInfo) => {
         socket.emit('editUserDetail', userInfo)
     }
 }
+
+// 获取好友列表
+export const getFriendShip = (socket) => {
+    if (socket) {
+        socket.emit('getFriendList', {});
+    }
+}
+
+// 搜索好友
+export const getSearchFriend = (socket, keyword) => {
+    if (socket) {
+        socket.emit('getSearchFriend', {
+            keyword
+        })
+    }
+}
