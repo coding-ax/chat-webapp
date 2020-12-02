@@ -31,11 +31,16 @@ export const socketListener = (socket) => {
         // 监听好友列表名单
         socket.on('friendList', (data) => {
             console.log(data)
+            dispatch(actionCreator.friendListChange(data.data))
         })
         // 监听好友搜索结果
         socket.on('searchFriend', (data) => {
             console.log(data)
             dispatch(actionCreator.searchFriendListChange(data.message))
+        })
+        // 监听好友添加响应
+        socket.on('addFriend', data => {
+            console.log(data)
         })
     }
 }

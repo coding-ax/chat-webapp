@@ -16,7 +16,10 @@ const initialState = {
         userID: ''
     },
     // searchFriendList
-    friendList: [],
+    friendList: {
+        added:[],
+        adding:[]
+    },
     searchFriendList: []
 }
 // 编写reducer

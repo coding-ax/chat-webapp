@@ -67,7 +67,7 @@ export const Friend = (props) => {
                     onClick={() => {
                         if (handleIconClick) handleIconClick();
                     }}>
-                    <Icon xlinkHref={xlinkHref}></Icon>
+                    <Icon xlinkHref={xlinkHref} size={"1.6rem"}></Icon>
                 </div>
             </div>
         </FriendStyle>

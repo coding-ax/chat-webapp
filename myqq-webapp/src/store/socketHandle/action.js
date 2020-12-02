@@ -28,3 +28,12 @@ export const getSearchFriend = (socket, keyword) => {
         })
     }
 }
+
+// 发起添加
+export const getAddFriend = (socket, target) => {
+    if (socket) {
+        socket.emit('getAddFriend', {
+            target
+        })
+    }
+}
