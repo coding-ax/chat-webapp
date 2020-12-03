@@ -4,7 +4,6 @@ module.exports = app => {
         // 验证当前登录的用户的有效性 
         // 1. 检查参数token是否完整
         const { token } = ctx.query
-        console.log(token)
         if (!token) {
             // 无效则踢出去并且终止进程
             ctx.socket.disconnect();
@@ -30,6 +29,6 @@ module.exports = app => {
             return
         }
         await next();
-        console.log("disconnect")
+        console.log(userID + '已经断开')
     }
 }

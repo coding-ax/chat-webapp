@@ -6,6 +6,7 @@ const moment = require('moment')
 class Friends extends Service {
     USER_TABLE = 'user'
     FRIEND_TABLE = 'friendship'
+    USER_DETAIL = 'user_detail'
     /**
      *
      * 返回所有朋友的userID
@@ -14,13 +15,12 @@ class Friends extends Service {
      * @memberof Friends
      */
     async getFriendList(userID) {
-        const result = await this.app.mysql.select(this.FRIEND_TABLE, {
-            where: {
-                userID
-            },
-            columns: ['friendID']
-        })
-        return result
+        const adding = await this.app.mysql.query(`select ${this.FRIEND_TABLE}.userID,sender,friendID,birthday,avator,addTime,gender,nickName,status,signature from ${this.USER_DETAIL} join ${this.FRIEND_TABLE} on ${this.USER_DETAIL}.userID=${this.FRIEND_TABLE}.friendID where ${this.FRIEND_TABLE}.userID=? AND status=?`, [userID, 1])
+        const added = await this.app.mysql.query(`select ${this.FRIEND_TABLE}.userID,sender,friendID,birthday,avator,addTime,gender,nickName,status,signature from ${this.USER_DETAIL} join ${this.FRIEND_TABLE} on ${this.USER_DETAIL}.userID=${this.FRIEND_TABLE}.friendID where ${this.FRIEND_TABLE}.userID=? AND status=?`, [userID, 2])
+        return {
+            added,
+            adding
+        }
     }
 
     /**
@@ -34,9 +34,21 @@ class Friends extends Service {
     async addFriend(userID, friendID) {
 
         // 检查friendID是否是有效用户 userID不需要检查(来自token必定有效)
-        const check = this.app.mysql.get(this.USER_TABLE, { userID: friendID })
+        const check = await this.app.mysql.get(this.USER_TABLE, { userID: friendID })
         if (!check) {
             return { status: false, message: 'error:不存在friendID' }
+        }
+        // 避免重复插入产生错误
+        const checkFriend = await this.app.mysql.get(this.FRIEND_TABLE, {
+            userID: friendID,
+            friendID: userID
+        })
+        console.log(checkFriend)
+        if (checkFriend) {
+            return {
+                status: false,
+                message: "已经发送过了"
+            }
         }
         // 验证通过 可以进行插入
         const addTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
@@ -46,13 +58,15 @@ class Friends extends Service {
                 userID,
                 friendID,
                 status: '1',
-                addTime
+                addTime,
+                sender: userID
             },
             {
                 userID: friendID,
                 friendID: userID,
                 status: '1',
-                addTime
+                addTime,
+                sender: userID
             }
         ]
         );
@@ -73,7 +87,7 @@ class Friends extends Service {
      */
     async agree(userID, friendID) {
         // 先检查记录存在 检查一条即可
-        const check = this.app.mysql.get(this.FRIEND_TABLE, { userID, friendID });
+        const check = await this.app.mysql.get(this.FRIEND_TABLE, { userID, friendID });
         if (!check) {
             return {
                 status: false,
@@ -88,5 +102,21 @@ class Friends extends Service {
             message: 'success:申请通过'
         }
     }
+
+    // 查询
+    async searchKey(keyword) {
+        console.log(keyword);
+        /** @array {data} */
+        const data = await this.app.mysql.query(
+            `select * from ${this.USER_DETAIL} where userID like ? OR nickName like ? OR userID in (select userID from ${this.USER_TABLE} where username like ?)`,
+            [keyword, '%' + keyword + '%', '%' + keyword + '%']
+        )
+        // 去掉自己
+        const ans = data.filter(item => {
+            return item.userID != this.ctx.socket.userID
+        })
+        return ans;
+    }
+
 }
 module.exports = Friends
