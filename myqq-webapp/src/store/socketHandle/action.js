@@ -37,3 +37,19 @@ export const getAddFriend = (socket, target) => {
         })
     }
 }
+// 发起同意好友申请
+export const getAgreeFriend = (socket, target) => {
+    if (socket) {
+        socket.emit('getAgreeFriend', {
+            target
+        })
+    }
+}
+// 发起删除好友
+export const getDeleteFriend = (socket, target) => {
+    if (socket) {
+        socket.emit('getDeleteFriend', {
+            target
+        })
+    }
+}

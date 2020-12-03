@@ -2,10 +2,12 @@ import React from 'react'
 // 导入style
 import { DialogStyle } from './style'
 const Dialog = (props) => {
-    const { open, title, needCheck } = props
-    const { onCancel, onConfirm } = props
+    const { open, title, needCheck = false, buttonDesc = ['确认', '取消'] } = props
+    const { onCancel, onConfirm,onExit } = props
     return (
-        <DialogStyle style={{ display: open ? 'flex' : 'none' }}>
+        <DialogStyle onClick={() => {
+            onExit();
+        }} style={{ display: open ? 'flex' : 'none' }}>
             <div className="contain">
                 <div className="title">{title}</div>
                 <div className="content">
@@ -13,12 +15,16 @@ const Dialog = (props) => {
                 </div>
                 {/**盒子 */}
                 <div className="button-box" style={{ display: needCheck ? 'flex' : 'none' }}>
-                    <span className="button-left" onClick={() => {
+                    <span className="button-left" onClick={(event) => {
+                        // 阻止冒泡
+                        event.stopPropagation();
                         onConfirm();
-                    }}>确认</span>
-                    <span className="button-right" onClick={() => {
+                    }}>{buttonDesc[0]}</span>
+                    <span className="button-right" onClick={(event) => {
+                        // 阻止冒泡
+                        event.stopPropagation();
                         onCancel();
-                    }}>取消</span>
+                    }}>{buttonDesc[1]}</span>
                 </div>
             </div>
         </DialogStyle>

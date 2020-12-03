@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 const DialogStyle = styled.div`
-    position:fixed;
+    position:absolute;
     z-index:1;
     left:0;
     right:0;

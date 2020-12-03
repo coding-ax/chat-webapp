@@ -43,7 +43,6 @@ class Friends extends Service {
             userID: friendID,
             friendID: userID
         })
-        console.log(checkFriend)
         if (checkFriend) {
             return {
                 status: false,
@@ -117,6 +116,19 @@ class Friends extends Service {
         })
         return ans;
     }
-
+    // 删除好友
+    async deleteFriend(userID, friendID) {
+        await this.app.mysql.delete(this.FRIEND_TABLE, {
+            userID,
+            friendID
+        })
+        await this.app.mysql.delete(this.FRIEND_TABLE, {
+            userID: friendID,
+            friendID: userID
+        })
+        return {
+            status: true,
+        }
+    }
 }
 module.exports = Friends

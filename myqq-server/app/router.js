@@ -36,5 +36,6 @@ module.exports = app => {
 
   // 处理同意添加事件 getAgreeFriend-friendList
   io.route('getAgreeFriend', io.controller.friendship.agreeFriend)
-  // 处理好友拒绝事件
+  // 处理好友拒绝/删除事件
+  io.route('getDeleteFriend', io.controller.friendship.deleteFriend)
 };

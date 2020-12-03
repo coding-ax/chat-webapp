@@ -27,6 +27,12 @@ class DefaultController extends Controller {
                 data
             })
         }
+        // 发给自己
+        const selfFriendList = await this.ctx.service.friend.getFriendList(ctx.socket.userID)
+        this.ctx.socket.emit('friendList', {
+            status: 'ok',
+            data:selfFriendList
+        })
         this.ctx.socket.emit('addFriend', { message, status: true })
     }
 
@@ -57,17 +63,20 @@ class DefaultController extends Controller {
         const { ctx } = this;
         const data = ctx.args[0];
         const { target } = data;
-        await ctx.service.friend.addFriend(target, ctx.userID)
-        const ans = await ctx.service.friend.getFriendList(ctx.userID)
+        await ctx.service.friend.agree(target, ctx.socket.userID)
+        
+        // 发给自己
+        const ans = await ctx.service.friend.getFriendList(ctx.socket.userID)
         ctx.socket.emit('friendList', {
             data: ans,
             status: true
         })
-        // 也通知对方
-        const targerSocket = await ctx.service.friend.getTargetSocket(target)
+        // 通知对方
+        const targerSocket = await ctx.service.common.getTargetSocket(target)
         if (targerSocket) {
-            ctx.socket.emit('friendList', {
-                data: ans,
+            const targetFriendList = await ctx.service.friend.getFriendList(target)
+            targerSocket.emit('friendList', {
+                data: targetFriendList,
                 status: true
             })
         }
@@ -89,9 +98,33 @@ class DefaultController extends Controller {
         })
     }
 
-    async refuse() {
+    /**
+     * 删除好友或者说拒绝
+     *
+     * @memberof DefaultController
+     */
+    async deleteFriend() {
         //处理好友拒绝
         //删除对应的数据就行
+        const { ctx } = this;
+        const { target } = ctx.args[0]
+        await this.ctx.service.friend.deleteFriend(ctx.socket.userID, target)
+        
+        // 完成操作后重新分发朋友列表
+        const ans = await ctx.service.friend.getFriendList(ctx.socket.userID)
+        ctx.socket.emit('friendList', {
+            data: ans,
+            status: true
+        })
+        // 也通知对方
+        const targerSocket = await ctx.service.common.getTargetSocket(target)
+        if (targerSocket) {
+            const targetFriendList = await ctx.service.friend.getFriendList(target)
+            targerSocket.emit('friendList', {
+                data: targetFriendList,
+                status: true
+            })
+        }
     }
 }
 
