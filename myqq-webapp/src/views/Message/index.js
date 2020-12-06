@@ -1,5 +1,7 @@
 import React from 'react'
 import Nav from '../../components/common/Nav'
+
+import Chat from '../Chat'
 const Message = (props) => {
     return (
         <div>
@@ -9,7 +11,7 @@ const Message = (props) => {
                 <span>信息</span>
                 <span></span>
             </Nav>
-            Message
+            <Chat></Chat>
         </div>
     )
 }
