@@ -8,7 +8,7 @@ const Transition = props => {
             in={show}
             timeout={300}
             classNames='showBox'
-            unmountOnExit
+            unmountOnExit={true}
         >
             <div style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, overflow: 'scroll', zIndex: 3, backgroundColor: '#fff' }}>
                 {props.children}

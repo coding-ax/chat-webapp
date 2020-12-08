@@ -1,35 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
+import Input from '../../components/context/Input'
+import Nav from '../../components/common/Nav'
+import Icon from '../../components/context/Icon'
 const ChatStyle = styled.div`
-.chat__content {
-  height: calc(100% - 40px);
-  margin-bottom: 40px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.input__content {
-  display: flex;
-  height: 40px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 80px;
-  align-items: center;
-}
-.input{
-    background-color:#000;
-    width:100vw;
-    height:10vh;
-    color:#fff;
-}
+    background-color:#f5f5f5;  
 `
 export const Chat = (props) => {
-    return (
-        <ChatStyle>
-            
-        </ChatStyle>
-    )
+
+  return (
+    <ChatStyle>
+      <Nav>
+        <span>
+          <Icon xlinkHref="#icon-houtui" size={"1.5rem"}></Icon>
+        </span>
+        <span>对方昵称</span>
+        <span></span>
+      </Nav>
+      <Input re></Input>
+    </ChatStyle>
+  )
 }
 
 export default Chat

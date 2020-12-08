@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
+
+// 组件
+import Transition from '../../components/common/Transition'
+import Chat from '../Chat'
 import Nav from '../../components/common/Nav'
 
-import Chat from '../Chat'
+
 const Message = (props) => {
+    const [show, setShow] = useState(false);
     return (
         <div>
             {/**nav状态 */}
@@ -11,7 +16,12 @@ const Message = (props) => {
                 <span>信息</span>
                 <span></span>
             </Nav>
-            <Chat></Chat>
+            <button onClick={() => {
+                setShow(!show)
+            }}>change</button>
+            <Transition show={show} >
+                <Chat></Chat>
+            </Transition>
         </div>
     )
 }

@@ -12,12 +12,21 @@ const DialogStyle = styled.div`
     justify-content:center;
     align-items:center;
     color:#000;
+    @keyframes show{
+        from{
+            transform:scale(0);
+        }
+        to{
+            transform:scale(1);
+        }
+    }
     .contain{
         background-color:#fff;
         width:70%;
         border-radius:0.5rem;
         height:40vh;
         display:flex;
+        animation:show 0.3s linear;
         flex-direction:column;
         text-align:center;
         .title{

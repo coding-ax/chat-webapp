@@ -1,0 +1,28 @@
+.bottom2top-enter,
+.bottom2top-appear {
+    transform: translateY(100%);
+}
+
+.bottom2top-enter-active,
+.bottom2top-appear-active {
+    transform: translateY(0);
+    transition: all 0.3s linear;
+}
+
+.bottom2top-enter-done {
+    transform: translateY(0);
+}
+
+/* 离场 */
+.bottom2top-exit {
+    transform: translateY(0%);
+}
+
+.bottom2top-exit-active {
+    transform: translateY(100%);
+    transition: all 0.3s linear;
+}
+.bottom2top-exit-done {
+    transform: translateY(100%);
+    display: none;
+}

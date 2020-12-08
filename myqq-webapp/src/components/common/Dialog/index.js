@@ -3,10 +3,10 @@ import React from 'react'
 import { DialogStyle } from './style'
 const Dialog = (props) => {
     const { open, title, needCheck = false, buttonDesc = ['确认', '取消'] } = props
-    const { onCancel, onConfirm,onExit } = props
+    const { onCancel, onConfirm, onExit } = props
     return (
         <DialogStyle onClick={() => {
-            onExit();
+            if (onExit) onExit();
         }} style={{ display: open ? 'flex' : 'none' }}>
             <div className="contain">
                 <div className="title">{title}</div>
@@ -18,12 +18,12 @@ const Dialog = (props) => {
                     <span className="button-left" onClick={(event) => {
                         // 阻止冒泡
                         event.stopPropagation();
-                        onConfirm();
+                        if (onConfirm) onConfirm();
                     }}>{buttonDesc[0]}</span>
                     <span className="button-right" onClick={(event) => {
                         // 阻止冒泡
                         event.stopPropagation();
-                        onCancel();
+                        if (onCancel) onCancel();
                     }}>{buttonDesc[1]}</span>
                 </div>
             </div>
