@@ -4,7 +4,7 @@ const NavStyle = styled.div`
     display:flex;
     flex-direction:row;
     width:100vw;
-    height:7vh;
+    height:3.5rem;
     background:#fbc531;
     align-items:center;
     font-size:1.2rem;

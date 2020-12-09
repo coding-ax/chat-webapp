@@ -1,12 +1,10 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState, useImperativeHandle, useRef } from 'react'
 // 组件
-import { Picker, Emoji } from 'emoji-mart'
+import { Picker } from 'emoji-mart'
 import Icon from '../Icon'
 import styled from 'styled-components'
 import 'emoji-mart/css/emoji-mart.css'
-// 动画
-import { CSSTransition } from 'react-transition-group'
-import './transition.css'
+
 const InputStyle = styled.div`
     position:absolute;
     min-height:3rem;
@@ -40,6 +38,17 @@ const InputStyle = styled.div`
         }   
         .icon-box{
             width:30%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            .send-btn{
+                background-color:#FBC531;
+                height:2rem;
+                line-height:2rem;
+                width:100%;
+                text-align:center;
+                border-radius:0.5rem;
+            }
             span{
                 margin:3%;
             }
@@ -47,32 +56,49 @@ const InputStyle = styled.div`
     }
    
 `
-// 组件 准备抛出这个关闭的setValue方法
+// 组件 准备抛出这个关闭的setValue方法 返回value就好
 export const Input = React.forwardRef((props, ref) => {
     const [showEmoji, setShowEmoji] = useState(false);
-    // const [value, setValue] = useState('')
+    // 用于记录输入 用于回传
+    const [value, setValue] = useState('');
+    let files = []
+    // 获取发送事件
+    const { handleValue = () => { }, handleImage = () => { } } = props;
+    // 获取提交并处理
+    // 暴露一部分操作接口
     useImperativeHandle(ref, () => ({
         hiddenInput: () => {
             setShowEmoji(false)
+        },
+        getValue: () => {
+            return value;
+        },
+        getImage: () => {
+            return files
         }
     }))
+    const inputFile = useRef(null)
+    const divInput = useRef(null)
     return (
         <InputStyle>
             <div className="input-contain">
                 {/**输入框 */}
                 <div contentEditable="true"
+                    ref={divInput}
                     id="input-box"
                     suppressContentEditableWarning={true}
                     tabIndex="0"
                     onInput={event => {
-                        console.log(event.currentTarget.innerText)
+                        setValue(event.currentTarget.innerText)
                     }}
                     onFocus={() => {
                         if (showEmoji) {
+                            // 点击隐藏表情输入
                             setShowEmoji(false)
                         }
                     }}
                 >
+
                 </div>
                 {/**按钮 */}
                 <div className="icon-box">
@@ -81,29 +107,41 @@ export const Input = React.forwardRef((props, ref) => {
                     }}>
                         <Icon size={"2rem"} xlinkHref={"#icon-biaoqing"} />
                     </span>
-                    <span >
-                        <Icon size={"2rem"} xlinkHref={"#icon-tupian"} />
-                    </span>
+                    {
+                        value === '' ? (<span onClick={() => {
+                            console.log(inputFile)
+                            inputFile.current.click();
+                        }}>
+                            <Icon size={"2rem"} xlinkHref={"#icon-tupian"} />
+                        </span>) : (<span className="send-btn" onClick={() => {
+                            // 传递value
+                            handleValue(value);
+                        }}>发送</span>)
+                    }
                 </div>
             </div>
-
-
-
-            <CSSTransition
-                in={showEmoji}
-                timeout={300}
-                classNames='bottom2top'
-            // unmountOnExit
-            >
-                <Picker
-                    style={{ width: "100%" }}
-                    set='apple'
-                    showPreview={false}
-                    showSkinTones={false}
-                    title={"表情包"}
-                    theme={"auto"}
-                />
-            </CSSTransition>
+            <Picker
+                style={{ width: "100%", display: showEmoji ? 'block' : 'none ' }}
+                set='apple'
+                showPreview={false}
+                showSkinTones={false}
+                title={"表情包"}
+                theme={"auto"}
+                onSelect={(emoji) => {
+                    //  直接加入native设置value
+                    divInput.current.innerText += emoji.native;
+                    setValue(divInput.current.innerText)
+                }}
+            />
+            {/**输入框 用来选择图片 */}
+            <input type="file" ref={inputFile} style={{ display: 'none' }}
+                accept="image/*"
+                onChange={(event) => {
+                    // 赋值给files
+                    files = event.target.files;
+                    handleImage(files)
+                }}
+            />
         </InputStyle>
     )
 })

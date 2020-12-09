@@ -20,7 +20,9 @@ const Message = (props) => {
                 setShow(!show)
             }}>change</button>
             <Transition show={show} >
-                <Chat></Chat>
+                <Chat onExit={() => {
+                    setShow(false)
+                }}></Chat>
             </Transition>
         </div>
     )

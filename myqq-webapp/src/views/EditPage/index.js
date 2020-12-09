@@ -40,7 +40,7 @@ const EditPage = props => {
             </Nav>
             {/**编辑框 */}
             <EditDetail title="头像">
-                <input type="file" maxLength={10}
+                <input type="file" 
                     style={
                         {
                             opacity: 0,
@@ -50,11 +50,11 @@ const EditPage = props => {
                             width: "3rem"
                         }
                     }
+                    accept="image/*"
                     onChange={async (event) => {
                         const file = event.target.files[0]
                         // 本地构造测试
                         // const src = window.URL.createObjectURL(event.target.files[0])
-                        // 获取token
                         // 文件上传
                         const url = await file2qiniuCloud(props.token, file)
                         setUserInfo({
