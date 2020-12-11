@@ -38,4 +38,8 @@ module.exports = app => {
   io.route('getAgreeFriend', io.controller.friendship.agreeFriend)
   // 处理好友拒绝/删除事件
   io.route('getDeleteFriend', io.controller.friendship.deleteFriend)
+
+  // 处理好友消息
+  // p2p聊天
+  io.route('chat2target', io.controller.chat.chatReset)
 };

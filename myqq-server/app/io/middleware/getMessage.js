@@ -6,7 +6,8 @@ module.exports = app => {
         const userID = ctx.socket.userID
         //  进行查询
         const data = await ctx.service.message.updateMessageRead(userID);
-        ctx.socket.emit('loginMessage', data)
+        // 在上线的时候分发未读消息
+        ctx.socket.emit('loginMessage', { data })
         await next();
     }
 }

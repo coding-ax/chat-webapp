@@ -2,6 +2,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const moment = require('moment')
 
 class DefaultController extends Controller {
   async chat() {
@@ -41,6 +42,37 @@ class DefaultController extends Controller {
 
 
     ctx.socket.emit('res', { message: { value: `发送给${target}:${message.value}:发送成功` } });
+  }
+  // 重新编写的聊天事件 由chat2target发起 针对对方发起message事件 针对发起者发起send事件
+  // 要求数据为 {target:对方userID,message:{value:要发送的信息(两种，图片链接和文字),type:1文字 2图片}}
+  async chatReset() {
+    const { ctx, app } = this;
+    // 所以我们需要的参数变成了： target(目标userID) message:{value:'要发送的内容',type:1} type:1 文字 type：2 图片
+    const data = ctx.args[0];
+    const { target, message } = data;
+    // 参数缺失则分发错误
+    if (!target || !message) {
+      ctx.socket.emit('404', { message: '参数缺失', status: false })
+      return;
+    }
+    // 从当前连接中获取用户的userID
+    const userID = ctx.socket.userID;
+    const targetSocket = await ctx.service.common.getTargetSocket(target)
+    // 连接存在
+    if (targetSocket) {
+      targetSocket.emit('message', {
+        dispatcher: userID,
+        messageValue: message.value,
+        messageType: message.type,
+        date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      })
+      ctx.socket.emit('send', { message: "发送成功", status: true, online: true })
+      await ctx.service.message.insertMessage(userID, target, message.value, message.type, 2);
+    } else {
+      // 当前连接不存在，则只进行存储
+      ctx.socket.emit('send', { message: "发送成功", status: true, online: false })
+      await ctx.service.message.insertMessage(userID, target, message.value, message.type, 1);
+    }
   }
 }
 
