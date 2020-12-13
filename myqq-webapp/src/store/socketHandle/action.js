@@ -70,7 +70,8 @@ export const chat2target = (socket, target, message) => {
     // 针对message进行base64编码
     message = {
         ...message,
-        value: window.btoa(window.encodeURIComponent(message.value))
+        // 针对文字进行编码
+        value: message.type === 1 ? window.btoa(window.encodeURIComponent(message.value)) : message.value
     }
     if (socket) {
         socket.emit('chat2target', {

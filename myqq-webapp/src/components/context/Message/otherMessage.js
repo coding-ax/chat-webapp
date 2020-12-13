@@ -21,7 +21,7 @@ const MessageBox = styled.div`
     background-color:#FFCD00;
     display:block;  
     margin-top:2%;
-    min-height:2rem;
+    min-height:1.3rem;
     min-width:2rem;
     max-width:70%;
     border-radius:0.5rem;
@@ -60,8 +60,13 @@ const DateTitle = styled.div`
     font-size:0.2rem;
     margin-right:2%;
 `
+const ImgMessage = styled.img`
+    min-width:3rem;
+    max-width:70%;
+    border-radius:0.4rem;
+`
 export const OtherMessgae = (props) => {
-    const { nickName = "", date = "", messageValue = "", avator = "https://xgpax.top/wp-content/uploads/2020/08/head.png" } = props;
+    const { nickName = "", date = "", messageValue = "", avator = "https://xgpax.top/wp-content/uploads/2020/08/head.png", messageType = "1" } = props;
     const { handleImgLoaded = () => { } } = props;
     return (
         <SelfMessageStyle>
@@ -71,9 +76,13 @@ export const OtherMessgae = (props) => {
             <DescBox>
                 <MessageTitle>{nickName}</MessageTitle>
                 <DateTitle>{date}</DateTitle>
-                <MessageBox>
-                    {messageValue}
-                </MessageBox>
+                {
+                    messageType === "1" ? (<MessageBox>
+                        {messageValue}
+                    </MessageBox>) : (<ImgMessage src={messageValue} onLoad={() => {
+                        handleImgLoaded();
+                    }} />)
+                }
             </DescBox>
         </SelfMessageStyle>
     )

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import Scroll from '../../common/Scroll'
 // 聊天框
@@ -16,7 +16,17 @@ const ChatBoxStyle = styled.div`
 export const ChatBox = (props) => {
     const scroll = useRef(null)
     // 数据结构对象应该是 [{type:1||2?,nickName,date,messageValue,messageType,avator }]
-    const {messageList=[]} = props; 
+    const { messageList = [] } = props;
+    useEffect(() => {
+        if (scroll) {
+            const bscroll = scroll.current.getBScroll()
+            console.log(bscroll)
+            if (bscroll) {
+                scroll.current.refresh()
+                bscroll.scrollTo(0, bscroll.maxScrollY)
+            }
+        }
+    }, [messageList])
     return (
         <ChatBoxStyle>
             <Scroll ref={scroll}>
@@ -24,7 +34,11 @@ export const ChatBox = (props) => {
                     {
                         messageList.map((item, index) => (<Message handleImgLoaded={() => {
                             // 加载后刷新scroll对象
-                            scroll.current.refresh()
+                            console.log("应该刷新的")
+                            if (scroll) {
+                                console.log('刷新imgload');
+                                scroll.current.refresh()
+                            }
                             // console.log(scroll)
                         }
                         }
@@ -34,7 +48,6 @@ export const ChatBox = (props) => {
                             messageType={item.messageType}
                             messageValue={item.messageValue}
                             avator={item.avator}
-                            handleImgLoaded={item.handleImgLoaded}
                             key={index} />))
                     }
                 </div>

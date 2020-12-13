@@ -4,6 +4,8 @@ import { actionCreator as chatActionCreator } from '../../views/Chat/store'
 // 导入store以应用dispatch
 import store from '../index'
 const dispatch = store.dispatch;
+// 在这里获取store状态
+
 // socket必须保证只被调用一次 在这里利用isOK变量控制
 let isOk = false;
 export const socketListener = (socket) => {
@@ -59,6 +61,20 @@ export const socketListener = (socket) => {
             dispatch(chatActionCreator.messageListChange(data.messageList))
         })
         // 获取收到的消息
+        socket.on('message', data => {
+            console.log(data)
+            const target = store.getState().ChatReducer.target
+            console.log(target)
+            // 正在聊天的处理
+            if(target===data.dispatcher){
+                dispatch(chatActionCreator.addMessageList(data))
+            }
+            // 未聊天的处理
+        })
+        // 获取发送动态
+        socket.on('send', data => {
+            console.log(data)
+        })
         // 监听获取对方信息：
         socket.on('UserDetailByUserIDs', data => {
             console.log(data)

@@ -6,9 +6,12 @@ import Icon from '../../components/context/Icon'
 import ChatBox from '../../components/context/chatBox'
 import dayjs from 'dayjs'
 // 导入redux
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 // 导入控制数据流方法
 import { getTargetChatMessage, chat2target } from '../../store/socketHandle/action'
+import { actionCreator } from './store'
+// 导入七牛云
+import { file2qiniuCloud } from '../../api/HomeRequest'
 let calendar = require('dayjs/plugin/calendar')
 require('dayjs/locale/zh-cn')
 dayjs.extend(calendar)
@@ -29,11 +32,20 @@ export const Chat = (props) => {
   const avator = useSelector(store => store.HomeReducer.userInfo.avator)
   // 获取聊天记录
   const messageList = useSelector(store => store.ChatReducer.messageList)
+  // 获取自己的id
+  const userID = useSelector(store => store.HomeReducer.userInfo.userID)
+  // 获取自己的名称
+  const nickName = useSelector(store => store.HomeReducer.userInfo.nickName)
+  // 获取token
+  const token = useSelector(store => store.LoginReducer.token)
+  // 分发
+  const dispatch = useDispatch();
+  console.log(messageList)
   // 针对messageList处理
   const messageListAfterHandle = messageList.map(item => ({
     ...item,
-    // 解码messageList
-    messageValue: window.decodeURIComponent(window.atob(item.messageValue)),
+    // 针对文字解码messageList
+    messageValue: item.messageType == "1" ? window.decodeURIComponent(window.atob(item.messageValue)) : item.messageValue,
     date: dayjs(item.date).calendar(null, {
       sameDay: '今天Ah:mm', // The same day ( Today at 2:30 AM )
       nextDay: '明天Ah:mm', // The next day ( Tomorrow at 2:30 AM )
@@ -43,16 +55,13 @@ export const Chat = (props) => {
       sameElse: 'DD/MM/YYYY' // Everything else ( 7/10/2011 )
     }),
     type: item.recevier === target ? 1 : 2,
-    nickName: targetNickname,
+    nickName: item.recevier === target ? nickName : targetNickname,
     avator: item.recevier === target ? avator : targetAvator
   }))
   useEffect(() => {
     if (target) {
       // 获取聊天记录
       getTargetChatMessage(socket, target)
-    }
-    return () => {
-
     }
   }, [target, socket])
   const ref = useRef(null)
@@ -79,10 +88,36 @@ export const Chat = (props) => {
             type: 1,
             value
           })
-          // 
+          // 构造数据添加
+          const data = {
+            date: new Date(),
+            dispatcher: userID,
+            messageType: 1,
+            // 进行base64编码
+            messageValue: window.btoa(window.encodeURIComponent(value)),
+            recevier: target
+          }
+          // 分发
+          dispatch(actionCreator.addMessageList(data))
         }}
-        handleImage={file => {
+        handleImage={async file => {
           console.log(file);
+          // 先上传
+          const url = await file2qiniuCloud(token, file[0]);
+          const data = {
+            date: new Date(),
+            dispatcher: userID,
+            messageType: 2,
+            // 进行base64编码
+            messageValue: url,
+            recevier: target
+          }
+          chat2target(socket, target, {
+            type: 2,
+            value: url
+          });
+          // 分发
+          dispatch(actionCreator.addMessageList(data))
         }
         } ></Input>
     </ChatStyle>

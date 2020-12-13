@@ -11,7 +11,18 @@ const changeMessageList = data => ({
     type: actionType.MESSAGELIST,
     data
 })
-
+const changeAddMessageList = data => ({
+    type: actionType.INSERTONEROWMESSAGELIST,
+    data
+})
+const changeUnReadMessageList = data => ({
+    type: actionType.UNREADMESSAGELIST,
+    data
+})
+const changeAddUnReadMessageList = data => ({
+    type: actionType.INSERTONEROWUNREADMESSAGELIST,
+    data
+})
 // 设置target
 export const targetChange = target => {
     return dispatch => {
@@ -29,5 +40,24 @@ export const targetDetailChange = targetDetail => {
 export const messageListChange = messageList => {
     return dispatch => {
         dispatch(changeMessageList(messageList))
+    }
+}
+
+// 添加一条message
+export const addMessageList = message => {
+    return dispatch => {
+        dispatch(changeAddMessageList(message))
+    }
+}
+// 修改unreadmessagelist
+export const unReadMessageListChange = unReadMessageList => {
+    return dispatch => {
+        dispatch(changeUnReadMessageList(unReadMessageList))
+    }
+}
+// 添加一条
+export const addUnReadMessageList = unReadMessage => {
+    return dispatch => {
+        dispatch(addUnReadMessageList(unReadMessage))
     }
 }

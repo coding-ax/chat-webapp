@@ -14,7 +14,8 @@ const initialState = {
         birthday: '',
         gender: 1
     },
-    messageList: []
+    messageList: [],
+    unReadMessagleList: []
 }
 // 编写reducer
 const ChatReducer = (state = initialState, action) => {
@@ -28,6 +29,15 @@ const ChatReducer = (state = initialState, action) => {
                 break;
             case actionType.MESSAGELIST:
                 draft.messageList = action.data;
+                break;
+            case actionType.INSERTONEROWMESSAGELIST:
+                draft.messageList.push(action.data)
+                break;
+            case actionType.UNREADMESSAGELIST:
+                draft.unReadMessagleList = action.data;
+                break;
+            case actionType.INSERTONEROWUNREADMESSAGELIST:
+                draft.unReadMessagleList.push(action.data)
                 break;
             default:
                 break;
