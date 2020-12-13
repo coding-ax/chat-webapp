@@ -44,6 +44,7 @@ const MessageBox = styled.div`
 const Avator = styled.img`
     width:2.7rem;
     height:2.7rem;
+    border-radius:0.3rem;
 `
 const MessageTitle = styled.div`
     text-align:right;
@@ -59,20 +60,22 @@ const DateTitle = styled.div`
     margin-right:2%;
 `
 export const SelfMessgae = (props) => {
+    // 显示状态
+    const { nickName = "", date = "", messageValue = "", avator = "https://xgpax.top/wp-content/uploads/2020/08/head.png", messageType = 1 } = props;
     const { handleImgLoaded = () => { } } = props;
     return (
         <SelfMessageStyle>
             <DescBox>
-                <MessageTitle>AX</MessageTitle>
-                <DateTitle>昨天21:10</DateTitle>
+                <MessageTitle>{nickName}</MessageTitle>
+                <DateTitle>{date}</DateTitle>
                 <MessageBox>
-                   
-                 </MessageBox>
+                    {messageValue}
+                </MessageBox>
             </DescBox>
-            <Avator src={"https://xgpax.top/wp-content/uploads/2020/08/head.png"} onload={() => {
+            <Avator src={avator} onload={() => {
                 handleImgLoaded();
             }} ></Avator>
-        </SelfMessageStyle >
+        </SelfMessageStyle>
     )
 }
 

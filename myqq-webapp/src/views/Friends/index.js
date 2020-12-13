@@ -7,19 +7,29 @@ import AddFriends from '../AddFriends'
 import Friend from '../../components/context/Friend'
 import Toast from '../../components/common/Toast'
 import Dialog from '../../components/common/Dialog'
+import Chat from '../Chat'
 //redux和数据操作方法
 import { getFriendShip, getAgreeFriend, getDeleteFriend } from '../../store/socketHandle/action'
 import { connect } from 'react-redux'
+import { actionCreator } from '../Chat/store'
 //css
 import { FriendList, FriendContain } from './style'
 const Friends = (props) => {
     const { socket, friendList } = props;
+    // 获取dispatch返回
+    const { changeTarget } = props;
+    // 展示 好友添加列表
     const [show, setShow] = useState(false)
+    // 展示 好友聊天页面
+    const [chat, setChat] = useState(false)
     const [openToast, setOpenToast] = useState(false)
     const [openDialog, setOpenDialog] = useState(false)
     const [content, setContent] = useState('')
     // 设置当前操作的target
     const [target, setTarget] = useState('')
+    // 设置当前操作地target的头像和昵称
+    const [avator, setAvator] = useState('https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png')
+    const [nickname, setNickname] = useState('')
     // 定义setToast方法用于显示
     const setToast = (content) => {
         setOpenToast(true);
@@ -31,9 +41,11 @@ const Friends = (props) => {
     // 获取朋友清单
     useEffect(() => {
         if (socket) {
+            console.log("执行")
             getFriendShip(socket);
         }
-    }, [socket])
+        // eslint-disable-next-line 
+    }, [])
     return (
         <FriendContain>
             {/**nav状态 */}
@@ -77,7 +89,10 @@ const Friends = (props) => {
                             desc={item.signature}
                             nickName={item.nickName}
                             handleIconClick={() => {
-
+                                changeTarget(item.friendID)
+                                setAvator(item.avator)
+                                setNickname(item.nickName)
+                                setChat(true)
                             }}
                             xlinkHref={"#icon-liaotian"}
                         ></Friend>)) : (<div className="desc-friend">无好友，快点击右上角添加好友吧！</div>)
@@ -113,6 +128,15 @@ const Friends = (props) => {
                     setShow(false)
                 }}></AddFriends>
             </Transition>
+            {/**聊天页面 */}
+            <Transition show={chat}>
+                <Chat
+                    targetAvator={avator}
+                    targetNickname={nickname}
+                    onExit={() => {
+                        setChat(false)
+                    }}></Chat>
+            </Transition>
         </FriendContain>
     )
 }
@@ -122,4 +146,11 @@ const mapStateToProps = (state) => {
         friendList: state.HomeReducer.friendList
     }
 }
-export default connect(mapStateToProps)(React.memo(Friends));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeTarget: (target) => {
+            dispatch(actionCreator.targetChange(target))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Friends));

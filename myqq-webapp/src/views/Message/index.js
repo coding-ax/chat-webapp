@@ -4,7 +4,11 @@ import React, { useState } from 'react'
 import Transition from '../../components/common/Transition'
 import Chat from '../Chat'
 import Nav from '../../components/common/Nav'
+import Friend from '../../components/context/Friend'
+import styled from 'styled-components'
+const FriendList = styled.div`
 
+`
 
 const Message = (props) => {
     const [show, setShow] = useState(false);
@@ -16,9 +20,17 @@ const Message = (props) => {
                 <span>信息</span>
                 <span></span>
             </Nav>
-            <button onClick={() => {
-                setShow(!show)
-            }}>change</button>
+            {/**消息列表*/}
+            <FriendList>
+                {
+                    [1, 2, 3, 4].map(item => (<Friend
+                        key={item}
+                        xlinkHref={"#icon-liaotian"}
+                    />))
+                }
+            </FriendList>
+
+            {/**聊天框 */}
             <Transition show={show} >
                 <Chat onExit={() => {
                     setShow(false)

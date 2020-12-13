@@ -53,3 +53,37 @@ export const getDeleteFriend = (socket, target) => {
         })
     }
 }
+
+// 聊天相关
+// 根据对方target获取详细 userIDs必须是一个数组
+export const getUserDetailByUserIDs = (socket, userIDs, type) => {
+    if (socket) {
+        socket.emit('getUserDetailByUserIDs', {
+            list: userIDs,
+            type
+        })
+    }
+}
+
+// 发送消息
+export const chat2target = (socket, target, message) => {
+    // 针对message进行base64编码
+    message = {
+        ...message,
+        value: window.btoa(window.encodeURIComponent(message.value))
+    }
+    if (socket) {
+        socket.emit('chat2target', {
+            target,
+            message
+        })
+    }
+}
+// 获取聊天记录
+export const getTargetChatMessage = (socket, target) => {
+    if (socket) {
+        socket.emit('getTargetChatMessage', {
+            target
+        })
+    }
+}

@@ -15,17 +15,26 @@ const ChatBoxStyle = styled.div`
 `
 export const ChatBox = (props) => {
     const scroll = useRef(null)
+    // 数据结构对象应该是 [{type:1||2?,nickName,date,messageValue,messageType,avator }]
+    const {messageList=[]} = props; 
     return (
         <ChatBoxStyle>
             <Scroll ref={scroll}>
                 <div>
                     {
-                        new Array(100).fill({ type: 0 }).map((item, index) => (<Message handleImgLoaded={() => {
+                        messageList.map((item, index) => (<Message handleImgLoaded={() => {
                             // 加载后刷新scroll对象
                             scroll.current.refresh()
+                            // console.log(scroll)
                         }
                         }
-                            type={Math.floor(Math.random() * 2 + 1)}
+                            type={item.type}
+                            nickName={item.nickName}
+                            date={item.date}
+                            messageType={item.messageType}
+                            messageValue={item.messageValue}
+                            avator={item.avator}
+                            handleImgLoaded={item.handleImgLoaded}
                             key={index} />))
                     }
                 </div>

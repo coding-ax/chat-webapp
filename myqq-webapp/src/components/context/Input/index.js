@@ -109,13 +109,15 @@ export const Input = React.forwardRef((props, ref) => {
                     </span>
                     {
                         value === '' ? (<span onClick={() => {
-                            console.log(inputFile)
                             inputFile.current.click();
                         }}>
                             <Icon size={"2rem"} xlinkHref={"#icon-tupian"} />
                         </span>) : (<span className="send-btn" onClick={() => {
                             // 传递value
                             handleValue(value);
+                            // 清空输入,重置value
+                            divInput.current.innerText = ''
+                            setValue('');
                         }}>发送</span>)
                     }
                 </div>
