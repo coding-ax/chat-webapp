@@ -8,7 +8,7 @@ const MessageStyle = styled.div`
 `
 export const Message = (props) => {
     // type=1:自己发的 type=2别人发的
-    const { type = 1, nickName = "", date = "", messageValue = "", avator = "https://xgpax.top/wp-content/uploads/2020/08/head.png", messageType = 1 } = props;
+    const { type = 1, nickName = "", date = "", messageValue = "", avator = "https://xgpax.top/wp-content/uploads/2020/08/head.png", messageType = "1" } = props;
     const { handleImgLoaded } = props;
     return (
         <MessageStyle>

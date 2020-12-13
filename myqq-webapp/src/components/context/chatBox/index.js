@@ -20,7 +20,6 @@ export const ChatBox = (props) => {
     useEffect(() => {
         if (scroll) {
             const bscroll = scroll.current.getBScroll()
-            console.log(bscroll)
             if (bscroll) {
                 scroll.current.refresh()
                 bscroll.scrollTo(0, bscroll.maxScrollY)
@@ -34,12 +33,13 @@ export const ChatBox = (props) => {
                     {
                         messageList.map((item, index) => (<Message handleImgLoaded={() => {
                             // 加载后刷新scroll对象
-                            console.log("应该刷新的")
                             if (scroll) {
-                                console.log('刷新imgload');
                                 scroll.current.refresh()
+                                const bscroll = scroll.current.getBScroll();
+                                if(bscroll){
+                                    bscroll.scrollTo(0,bscroll.maxScrollY)
+                                }
                             }
-                            // console.log(scroll)
                         }
                         }
                             type={item.type}

@@ -40,11 +40,11 @@ export const Chat = (props) => {
   const token = useSelector(store => store.LoginReducer.token)
   // 分发
   const dispatch = useDispatch();
-  console.log(messageList)
   // 针对messageList处理
   const messageListAfterHandle = messageList.map(item => ({
     ...item,
     // 针对文字解码messageList
+    // eslint-disable-next-line
     messageValue: item.messageType == "1" ? window.decodeURIComponent(window.atob(item.messageValue)) : item.messageValue,
     date: dayjs(item.date).calendar(null, {
       sameDay: '今天Ah:mm', // The same day ( Today at 2:30 AM )
@@ -92,7 +92,7 @@ export const Chat = (props) => {
           const data = {
             date: new Date(),
             dispatcher: userID,
-            messageType: 1,
+            messageType: "1",
             // 进行base64编码
             messageValue: window.btoa(window.encodeURIComponent(value)),
             recevier: target
@@ -101,22 +101,21 @@ export const Chat = (props) => {
           dispatch(actionCreator.addMessageList(data))
         }}
         handleImage={async file => {
-          console.log(file);
           // 先上传
           const url = await file2qiniuCloud(token, file[0]);
-          const data = {
-            date: new Date(),
-            dispatcher: userID,
-            messageType: 2,
-            // 进行base64编码
-            messageValue: url,
-            recevier: target
-          }
           chat2target(socket, target, {
             type: 2,
             value: url
           });
           // 分发
+          const data = {
+            date: new Date(),
+            dispatcher: userID,
+            messageType: "2",
+            // 进行base64编码
+            messageValue: url,
+            recevier: target
+          }
           dispatch(actionCreator.addMessageList(data))
         }
         } ></Input>

@@ -53,28 +53,33 @@ export const socketListener = (socket) => {
 
         // 监听登录消息
         socket.on('loginMessage', data => {
-            console.log(data)
+            const unReadMessageList = data.data.data;
+            dispatch(chatActionCreator.unReadMessageListChange(unReadMessageList))
         })
         // 监听获取聊天记录
         socket.on('targetChatMessage', data => {
-            console.log(data.messageList)
+            // console.log(data.messageList)
             dispatch(chatActionCreator.messageListChange(data.messageList))
         })
         // 获取收到的消息
         socket.on('message', data => {
-            console.log(data)
             const target = store.getState().ChatReducer.target
-            console.log(target)
             // 正在聊天的处理
-            if(target===data.dispatcher){
+            if (target === data.dispatcher) {
+                // 加入到现在正在聊天的位置
                 dispatch(chatActionCreator.addMessageList(data))
             }
             // 未聊天的处理
+            else {
+                // 加入到未读中
+                console.log(data)
+                dispatch(chatActionCreator.addUnReadMessageList(data))
+            }
         })
-        // 获取发送动态
-        socket.on('send', data => {
-            console.log(data)
-        })
+        // // 获取发送动态
+        // socket.on('send', data => {
+        //     console.log(data)
+        // })
         // 监听获取对方信息：
         socket.on('UserDetailByUserIDs', data => {
             console.log(data)

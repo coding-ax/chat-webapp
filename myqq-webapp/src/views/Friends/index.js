@@ -41,7 +41,6 @@ const Friends = (props) => {
     // 获取朋友清单
     useEffect(() => {
         if (socket) {
-            console.log("执行")
             getFriendShip(socket);
         }
         // eslint-disable-next-line 
@@ -135,6 +134,8 @@ const Friends = (props) => {
                     targetNickname={nickname}
                     onExit={() => {
                         setChat(false)
+                       // 退出就清除
+                        changeTarget('')
                     }}></Chat>
             </Transition>
         </FriendContain>

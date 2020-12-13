@@ -74,7 +74,8 @@ export const SelfMessgae = (props) => {
                 <MessageTitle>{nickName}</MessageTitle>
                 <DateTitle>{date}</DateTitle>
                 {
-                    messageType === "1" ? (<MessageBox>
+                    // eslint-disable-next-line
+                    messageType == "1" ? (<MessageBox>
                         {messageValue}
                     </MessageBox>) : (<ImgMessage src={messageValue} onLoad={() => {
                         handleImgLoaded();

@@ -23,6 +23,10 @@ const changeAddUnReadMessageList = data => ({
     type: actionType.INSERTONEROWUNREADMESSAGELIST,
     data
 })
+const changeFriendList = data => ({
+    type: actionType.FRIENDLIST,
+    data
+})
 // 设置target
 export const targetChange = target => {
     return dispatch => {
@@ -58,6 +62,12 @@ export const unReadMessageListChange = unReadMessageList => {
 // 添加一条
 export const addUnReadMessageList = unReadMessage => {
     return dispatch => {
-        dispatch(addUnReadMessageList(unReadMessage))
+        dispatch(changeAddUnReadMessageList(unReadMessage))
+    }
+}
+// 修改好友列表
+export const friendListChange = friendList => {
+    return dispatch => {
+        dispatch(changeFriendList(friendList))
     }
 }

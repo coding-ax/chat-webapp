@@ -9,7 +9,7 @@ const Zoom = (props) => {
                 <span>Zoom</span>
                 <span></span>
             </Nav>
-            Zoom
+           待开发中！
         </div>
     )
 }
