@@ -75,7 +75,7 @@ class Friends extends Service {
         }
     }
 
-    // 同意好友申请同样需要改两条
+
     /**
      *
      * 同意好友申请
@@ -94,6 +94,7 @@ class Friends extends Service {
             }
         }
         // 更改为通过申请
+        // 同意好友申请同样需要改两条
         await this.app.mysql.query(`update friendship set status=? where userID=? and friendID=?`, ['2', userID, friendID]);
         await this.app.mysql.query(`update friendship set status=? where userID=? and friendID=?`, ['2', friendID, userID]);
         return {
@@ -102,7 +103,13 @@ class Friends extends Service {
         }
     }
 
-    // 查询
+    /**
+     * 
+     * 通过keyword进行查询 返回对应信息数组
+     * @param {string} keyword
+     * @return {[]数组} 
+     * @memberof Friends
+     */
     async searchKey(keyword) {
         console.log(keyword);
         /** @array {data} */
@@ -116,7 +123,16 @@ class Friends extends Service {
         })
         return ans;
     }
-    // 删除好友
+
+
+    /**
+     *
+     * 删除数据库中的朋友关系 
+     * @param {string} userID
+     * @param {string} friendID
+     * @return {object} 
+     * @memberof Friends
+     */
     async deleteFriend(userID, friendID) {
         await this.app.mysql.delete(this.FRIEND_TABLE, {
             userID,

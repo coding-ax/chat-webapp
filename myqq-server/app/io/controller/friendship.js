@@ -37,7 +37,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     *搜索friend 
+     *搜索friend  分发信号 :searchFriend
      *参数要求：{keyword:userID或者名字}
      * @memberof DefaultController
      */

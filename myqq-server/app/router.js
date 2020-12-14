@@ -39,7 +39,11 @@ module.exports = app => {
   // 处理好友拒绝/删除事件
   io.route('getDeleteFriend', io.controller.friendship.deleteFriend)
 
-  // 处理好友消息
   // p2p聊天
-  io.route('chat2target', io.controller.chat.chatReset)
+  // 聊天
+  io.route('chat2target', io.controller.chat.chat2target)
+  // 获取聊天记录
+  io.route('getTargetChatMessage',io.controller.chat.getTargetChatMessage)
+  // 获取对方信息
+  io.route('getUserDetailByUserIDs',io.controller.detail.getUserDetailByUserIDs)
 };

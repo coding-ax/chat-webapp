@@ -45,10 +45,25 @@ class Friends extends Service {
             }
         }
     }
-
-    // 将所有的消息 全部修改为，已经发送 并将其返回
+    // 获取所有聊天记录
     /**
      *
+     * 获取所有聊天记录 userID target
+     * @param {string} userID
+     * @param {string} target
+     * @return {[data]} 
+     * @memberof Friends
+     */
+    async getAllMessageWithTarget(userID, target) {
+        const { app } = this;
+        // 获取所有聊天记录
+        const data = await app.mysql.query(`select dispatcher,recevier,messageValue,messageType,date from ${this.MESSAGE_TABLE} where (dispatcher=? AND recevier=?) OR (dispatcher=? AND recevier=?) ORDER BY date`, [target, userID, userID, target])
+        return data;
+    }
+
+
+    /**
+     * 将所有的消息 全部修改为，已经发送 并将其返回
      * 返回未读消息
      * @param {String} recevier
      * @return {{

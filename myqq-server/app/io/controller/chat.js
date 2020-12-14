@@ -43,13 +43,23 @@ class DefaultController extends Controller {
 
     ctx.socket.emit('res', { message: { value: `发送给${target}:${message.value}:发送成功` } });
   }
-  // 重新编写的聊天事件 由chat2target发起 针对对方发起message事件 针对发起者发起send事件
-  // 要求数据为 {target:对方userID,message:{value:要发送的信息(两种，图片链接和文字),type:1文字 2图片}}
-  async chatReset() {
-    const { ctx, app } = this;
+
+
+
+  /**
+   *
+   * 重新编写的聊天事件 由chat2target发起 针对对方发起message事件 针对发起者发起send事件
+   * 要求数据为 {target:对方userID,message:{value:要发送的信息(两种，图片链接和文字),type:1文字 2图片}}
+   * 分发 message消息给对方（online）+  
+   * @return {null} 
+   * @memberof DefaultController
+   */
+  async chat2target() {
+    const { ctx } = this;
     // 所以我们需要的参数变成了： target(目标userID) message:{value:'要发送的内容',type:1} type:1 文字 type：2 图片
     const data = ctx.args[0];
     const { target, message } = data;
+    console.log(target, message)
     // 参数缺失则分发错误
     if (!target || !message) {
       ctx.socket.emit('404', { message: '参数缺失', status: false })
@@ -61,18 +71,47 @@ class DefaultController extends Controller {
     // 连接存在
     if (targetSocket) {
       targetSocket.emit('message', {
+        recevier: target,
         dispatcher: userID,
         messageValue: message.value,
         messageType: message.type,
         date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
       })
-      ctx.socket.emit('send', { message: "发送成功", status: true, online: true })
+      ctx.socket.emit('send', {
+        message: "发送成功",
+        status: true,
+        online: true,
+        date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      })
       await ctx.service.message.insertMessage(userID, target, message.value, message.type, 2);
     } else {
-      // 当前连接不存在，则只进行存储
-      ctx.socket.emit('send', { message: "发送成功", status: true, online: false })
+      // 当前连接不存在，则只进行存储等待下次其登录时发送
+      ctx.socket.emit('send', {
+        message: "发送成功",
+        status: true,
+        online: false,
+        date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      })
       await ctx.service.message.insertMessage(userID, target, message.value, message.type, 1);
     }
+
+  }
+
+  // 获取target聊天记录
+  /**
+   * 需要target参数：
+   * 触发信号 targetChatMessage
+   * @memberof DefaultController
+   */
+  async getTargetChatMessage() {
+    const { ctx } = this;
+    const data = ctx.args[0];
+    const { target } = data;
+    const userID = ctx.socket.userID;
+    const messageList = await ctx.service.message.getAllMessageWithTarget(userID, target);
+    ctx.socket.emit('targetChatMessage', {
+      messageList
+    })
   }
 }
 
