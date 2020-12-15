@@ -25,6 +25,10 @@ export const ChatBox = (props) => {
             }
         }
     }, [messageList])
+    // 监听键盘弹起
+    useEffect(()=>{
+        
+    })
     return (
         <ChatBoxStyle>
             <Scroll ref={scroll}>
