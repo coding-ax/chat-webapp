@@ -13,6 +13,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { getDetail } from '../../store/socketHandle/action'
 import { actionCreator as LoginActionCreator } from '../Login/store'
+import { actionCreator as ChatActionCreator } from '../Chat/store'
 const BottomButton = styled.div`
    display: flex;
    justify-content: center;
@@ -28,7 +29,7 @@ const Config = (props) => {
     const { userInfo } = props;
     // history
     const { history } = props;
-    const { changeToken } = props;
+    const { changeToken,clearUnReadMessageList } = props;
     // 连接后就马上请求信息
     useEffect(() => {
         if (socket) {
@@ -45,7 +46,10 @@ const Config = (props) => {
                 <span onClick={() => {
                     history.goBack();
                     localStorage.removeItem('token')
+                    // 清除token
                     changeToken('')
+                    // 清除unreadlist
+                    clearUnReadMessageList();
                 }}> <Icon size={'1.5rem'} xlinkHref="#icon-houtui"></Icon></span>
                 <span>设置</span>
                 <span></span>
@@ -91,6 +95,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeToken: (token) => {
             dispatch(LoginActionCreator.tokenChange(token))
+        },
+        clearUnReadMessageList: () => {
+            dispatch(ChatActionCreator.unReadMessageListChange({}))
         }
     }
 }

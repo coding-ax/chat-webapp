@@ -4,7 +4,6 @@ import Scroll from '../../common/Scroll'
 // 聊天框
 import Message from '../Message'
 const ChatBoxStyle = styled.div`
-    /* height:calc(100vh - 6rem); */
     position:absolute;
     left:0;
     right:0;
