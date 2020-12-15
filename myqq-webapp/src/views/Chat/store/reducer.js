@@ -37,6 +37,20 @@ const ChatReducer = (state = initialState, action) => {
             case actionType.UNREADMESSAGELIST:
                 draft.unReadMessageList = action.data;
                 break;
+            case actionType.CHANGECOUNT:
+                {
+                    const { target, count } = action.data;
+                    draft.unReadMessageList[target].count = count;
+                }
+                break;
+            case actionType.CHANGELASTMESSAGE:
+                {
+                    const { target, lastMessage, messageType } = action.data;
+                    draft.unReadMessageList[target].lastMessage = lastMessage;
+                    draft.unReadMessageList[target].messageType = messageType;
+                    draft.unReadMessageList[target].messageValue = messageType;
+                }
+                break;
             default:
                 break;
         }

@@ -10,3 +10,7 @@ export const INSERTONEROWMESSAGELIST = 'INSERTONEROWMESSAGELIST'
 export const UNREADMESSAGELIST = 'UNREADMESSAGELIST'
 // 朋友列表
 export const FRIENDLIST = 'FRIENDLIST'
+// 修改unReadMessageList的某一条消息的count
+export const CHANGECOUNT = 'CHANGECOUNT'
+// 修改message
+export const CHANGELASTMESSAGE = 'CHANGELASTMESSAGE'

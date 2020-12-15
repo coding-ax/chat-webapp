@@ -23,6 +23,14 @@ const changeFriendList = data => ({
     type: actionType.FRIENDLIST,
     data
 })
+const changeMessage = data => ({
+    type: actionType.CHANGELASTMESSAGE,
+    data
+})
+const changeCount = data => ({
+    type: actionType.CHANGECOUNT,
+    data
+})
 // 设置target
 export const targetChange = target => {
     return dispatch => {
@@ -59,5 +67,18 @@ export const unReadMessageListChange = unReadMessageList => {
 export const friendListChange = friendList => {
     return dispatch => {
         dispatch(changeFriendList(friendList))
+    }
+}
+
+// 修改count data:{ count, target }
+export const countChange = (countData) => {
+    return dispatch => {
+        dispatch(changeCount(countData))
+    }
+}
+
+export const messageChange = (messageData) => {
+    return dispatch => {
+        dispatch(changeMessage(messageData))
     }
 }

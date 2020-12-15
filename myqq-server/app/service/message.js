@@ -86,13 +86,12 @@ class Friends extends Service {
                 orders: [['dispatcher', 'asc'], ['id', 'asc']], // 排序方式
             })
             // 修改data的阅读状态为2
-            // 先取消修改
-            // for (const item of data) {
-            //     await app.mysql.update(this.MESSAGE_TABLE, {
-            //         id: item.id,
-            //         messageStatus: '2'
-            //     })
-            // }
+            for (const item of data) {
+                await app.mysql.update(this.MESSAGE_TABLE, {
+                    id: item.id,
+                    messageStatus: '2'
+                })
+            }
             // 运行后获取对应的个人资料
             // 首先拿到人
             let obj = {}
@@ -118,13 +117,11 @@ class Friends extends Service {
             // 进行查询
             const userInfo = await this.ctx.service.user.getDataByUserID(list)
             for (let user of userInfo) {
-                console.log(obj[user.userID]);
                 obj[user.userID] = {
                     ...obj[user.userID],
                     ...user
                 }
             }
-            console.log(obj);
             return {
                 status: true,
                 obj

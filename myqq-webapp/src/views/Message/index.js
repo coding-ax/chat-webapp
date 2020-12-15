@@ -7,7 +7,8 @@ import Nav from '../../components/common/Nav'
 import Friend from '../../components/context/Friend'
 import styled from 'styled-components'
 // redux
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { actionCreator } from '../Chat/store'
 const FriendList = styled.div`
 
 `
@@ -17,20 +18,20 @@ const FriendList = styled.div`
  * @param {Array} unReadList
  */
 const Message = (props) => {
+    // 设置state
     const [show, setShow] = useState(false);
-    // const mockData = [{
-    //     avator: 'https://img.xgpax.top/Sun Dec 13 2020 19:30:03 GMT+0800 (GMT+08:00)224568e4fbccf',
-    //     lastMessage: '我是一条测试数据',
-    //     nickname: '测试昵称',
-    //     date: new Date().toLocaleTimeString(),
-    //     count: 1
-    // }]
+    const [avator, setAvator] = useState('https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png')
+    const [nickname, setNickname] = useState('')
+    const dispatch = useDispatch();
+    // 设置显示的数据
     const fakeData = []
+    const target = useSelector(store => store.ChatReducer.target)
     const unReadMessageList = useSelector(store => store.ChatReducer.unReadMessageList)
     for (const item in unReadMessageList) {
-        console.log(unReadMessageList[item]);
         fakeData.push(unReadMessageList[item])
     }
+    // 获取当前聊天
+    const messageList = useSelector(store => store.ChatReducer.messageList)
     return (
         <div>
             {/**nav状态 */}
@@ -49,15 +50,35 @@ const Message = (props) => {
                         desc={(item.count > 0 ? `[有${item.count}条新消息]` : '') + (item.messageType == "1" ? window.decodeURIComponent(window.atob(item.lastMessage)) : "图片")}
                         avator={item.avator}
                         xlinkHref={"#icon-liaotian"}
+                        handleIconClick={() => {
+                            // 分发target改变
+                            dispatch(actionCreator.targetChange(item.userID))
+                            // 传入头像
+                            setAvator(item.avator)
+                            // 传入nickname
+                            setNickname(item.nickName)
+                            setShow(true)
+                        }}
                     />))) : (<span>暂无消息</span>)
                 }
             </FriendList>
 
             {/**聊天框 */}
             <Transition show={show} >
-                <Chat onExit={() => {
-                    setShow(false)
-                }}></Chat>
+                <Chat
+                    targetAvator={avator}
+                    targetNickname={nickname}
+                    onExit={() => {
+                        dispatch(actionCreator.targetChange(''))
+                        // 清除消息，更新message
+                        dispatch(actionCreator.countChange({ target, count: 0 }))
+                        dispatch(actionCreator.messageChange({
+                            target,
+                            lastMessage: messageList[messageList.length - 1].messageValue,
+                            messageType: messageList[messageList.length - 1].messageType,
+                        }))
+                        setShow(false)
+                    }}></Chat>
             </Transition>
         </div>
     )
