@@ -13,9 +13,11 @@ module.exports = app => {
   router.post('/user/login', controller.user.login);
   // 获取用户信息 参数：username
   router.get('/user/getInfo', app.jwt, controller.user.getInfo);
-
+  // 根据userID获取用户信息
+  router.post('/user/getInfoByID', app.jwt, controller.user.getInfoByUserID);
   // 图片上传 返回七牛云token
   router.get('/qiniutoken', app.jwt, controller.config.qiniuToken);
+  // 根据数组获取用户信息 参数users
 
   // app.io.of('/') 单人聊天处理器
   // io.route('chat', io.controller.chat.chat);
@@ -43,7 +45,7 @@ module.exports = app => {
   // 聊天
   io.route('chat2target', io.controller.chat.chat2target)
   // 获取聊天记录
-  io.route('getTargetChatMessage',io.controller.chat.getTargetChatMessage)
+  io.route('getTargetChatMessage', io.controller.chat.getTargetChatMessage)
   // 获取对方信息
-  io.route('getUserDetailByUserIDs',io.controller.detail.getUserDetailByUserIDs)
+  io.route('getUserDetailByUserIDs', io.controller.detail.getUserDetailByUserIDs)
 };

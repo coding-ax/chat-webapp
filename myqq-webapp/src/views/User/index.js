@@ -12,6 +12,7 @@ import EditPage from '../EditPage'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { getDetail } from '../../store/socketHandle/action'
+import { actionCreator as LoginActionCreator } from '../Login/store'
 const BottomButton = styled.div`
    display: flex;
    justify-content: center;
@@ -27,7 +28,7 @@ const Config = (props) => {
     const { userInfo } = props;
     // history
     const { history } = props;
-
+    const { changeToken } = props;
     // 连接后就马上请求信息
     useEffect(() => {
         if (socket) {
@@ -43,6 +44,8 @@ const Config = (props) => {
             <Nav>
                 <span onClick={() => {
                     history.goBack();
+                    localStorage.removeItem('token')
+                    changeToken('')
                 }}> <Icon size={'1.5rem'} xlinkHref="#icon-houtui"></Icon></span>
                 <span>设置</span>
                 <span></span>
@@ -84,4 +87,11 @@ const mapStateToProps = (state) => {
         userInfo: state.HomeReducer.userInfo
     }
 }
-export default connect(mapStateToProps)(React.memo(withRouter(Config))) 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeToken: (token) => {
+            dispatch(LoginActionCreator.tokenChange(token))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(withRouter(Config))) 

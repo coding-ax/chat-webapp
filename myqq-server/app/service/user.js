@@ -24,6 +24,6 @@ class Friends extends Service {
             data.push(friendDetail)
         }
         return data;
-    }
+    }   
 }
 module.exports = Friends

@@ -123,4 +123,4 @@ export const Chat = (props) => {
   )
 }
 
-export default Chat
+export default React.memo(Chat)

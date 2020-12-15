@@ -10,10 +10,11 @@ import LoginInput from '../../components/common/LoginInput'
 import Dialog from '../../components/common/Dialog'
 import Loading from '../../components/common/loading'
 import Toast from '../../components/common/Toast'
+import { getInfo } from '../../api/LoginRequest'
 function Login(props) {
     // 登录用户名和密码
-    const { loading, error, history, isLogin, register } = props
-    const { getLogin, changeLoading, changeIsError, registerUser, changeRegister } = props;
+    const { loading, error, history, register, token } = props
+    const { getLogin, changeToken, changeLoading, changeIsError, registerUser, changeRegister } = props;
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [isLoginStatus, setIsLoginStatus] = useState(true);
@@ -29,15 +30,26 @@ function Login(props) {
             setToast(false)
         }, 2000);
     }
+    // 从本地获取token
+    useEffect(() => {
+        const localToken = localStorage.getItem('token');
+        if (localToken) {
+            changeToken(localToken);
+        }
+    }, [changeToken])
+
     // 登录成功的逻辑处理
     useEffect(() => {
-        // 已经登录则跳转主页
-        if (isLogin) {
-            setTimeout(() => {
+        if (token) {
+            // 存进本地
+            getInfo('', token).then(() => {
+                localStorage.setItem('token', token)
                 history.push('/home/message')
-            }, 500);
+            }).catch((err) => {
+                console.log(err)
+            })
         }
-    }, [isLogin, history])
+    }, [token, history])
     // 中途出错的逻辑处理
     useEffect(() => {
         if (error) {
@@ -152,6 +164,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getInfo: (username) => {
             dispatch(actionCreator.getUserInfo(username))
+        },
+        changeToken: (token) => {
+            dispatch(actionCreator.tokenChange(token))
         },
         changeLoading: (status) => {
             dispatch(actionCreator.changeLoadingStatus(status))

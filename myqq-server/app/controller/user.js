@@ -34,5 +34,16 @@ class UserController extends Controller {
             data
         }
     }
+    // 根据userID获取Info
+    async getInfoByUserID() {
+        const { ctx } = this;
+        // 获取userid
+        const { userID } = ctx.request.body
+        const data = await ctx.service.user.getDataByUserID([userID])
+        ctx.body = {
+            status: true,
+            data
+        }
+    }
 }
 module.exports = UserController

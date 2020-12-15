@@ -70,10 +70,10 @@ export const getLogin = (username, password) => {
             let token = res.data.token
             // 成功获取token则派发数据 否则返回失败
             if (token) {
-                dispatch(changeToken(token));
                 setTimeout(() => {
                     dispatch(changeIsLogin(true));
                     dispatch(changeLoading(false))
+                    dispatch(changeToken(token))
                 }, 1000);
             }
             else {
@@ -120,5 +120,11 @@ export const changeErrorStatus = (status) => {
 export const changeRegisterStatus = (status) => {
     return dispatch => {
         dispatch(changeRegister(status))
+    }
+}
+// 修改token
+export const tokenChange = token => {
+    return dispatch => {
+        dispatch(changeToken(token))
     }
 }

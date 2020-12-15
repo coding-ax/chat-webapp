@@ -50,7 +50,7 @@ function Home(props) {
     // state
     const [currentIndex, setCurrentIndex] = useState(0);
     // redux state
-    const { token, isLogin, socket } = props;
+    const { token, socket } = props;
     // redux dispatch
     const { socketConnect } = props;
     // react-router
@@ -68,10 +68,10 @@ function Home(props) {
 
     // 鉴权：未登录则回到登录
     useEffect(() => {
-        if (!isLogin) {
+        if (!token) {
             history.push('/')
         }
-    }, [isLogin, history])
+    }, [token, history])
 
     // 进行socket连接
     useEffect(() => {
