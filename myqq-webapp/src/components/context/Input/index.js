@@ -112,18 +112,28 @@ export const Input = React.forwardRef((props, ref) => {
                             inputFile.current.click();
                         }}>
                             <Icon size={"2rem"} xlinkHref={"#icon-tupian"} />
-                        </span>) : (<span className="send-btn" onClick={() => {
-                            // 传递value
-                            handleValue(value);
-                            // 清空输入,重置value
-                            divInput.current.innerText = ''
-                            setValue('');
-                        }}>发送</span>)
+                        </span>) : (<span className="send-btn"
+                            onMouseDown={event => {
+                                // 阻止失去焦点
+                                event.preventDefault();
+                            }}
+                            onClick={() => {
+                                // 传递value
+                                handleValue(value);
+                                // 清空输入,重置value
+                                divInput.current.innerText = ''
+                                setValue('');
+                            }}>发送</span>)
                     }
                 </div>
             </div>
             <Picker
-                style={{ width: "100%", display: showEmoji ? 'block' : 'none ' }}
+                style={
+                    {
+                        width: "100%",
+                        display: showEmoji ? 'block' : 'none '
+                    }
+                }
                 set='apple'
                 showPreview={false}
                 showSkinTones={false}

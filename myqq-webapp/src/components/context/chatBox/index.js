@@ -28,7 +28,16 @@ export const ChatBox = (props) => {
     }, [messageList])
     // 监听键盘弹起
     useEffect(() => {
-        handleClick();
+        // 保持弹起
+        window.onresize = () => {
+            if (scroll) {
+                const bscroll = scroll.current.getBScroll()
+                if (bscroll) {
+                    scroll.current.refresh()
+                    bscroll.scrollTo(0, bscroll.maxScrollY)
+                }
+            }
+        }
     })
     return (
         <ChatBoxStyle>
