@@ -7,8 +7,8 @@ const ChatBoxStyle = styled.div`
     position:absolute;
     left:0;
     right:0;
-    top:3.5rem;
     bottom:3rem;
+    top:3.5rem;
     overflow:scroll;
     background-color:#f5f5f5;
 `
@@ -16,6 +16,7 @@ export const ChatBox = (props) => {
     const scroll = useRef(null)
     // 数据结构对象应该是 [{type:1||2?,nickName,date,messageValue,messageType,avator }]
     const { messageList = [] } = props;
+    const { handleClick = () => { } } = props;
     useEffect(() => {
         if (scroll) {
             const bscroll = scroll.current.getBScroll()
@@ -26,21 +27,24 @@ export const ChatBox = (props) => {
         }
     }, [messageList])
     // 监听键盘弹起
-    useEffect(()=>{
-        
+    useEffect(() => {
+        handleClick();
     })
     return (
         <ChatBoxStyle>
             <Scroll ref={scroll}>
-                <div>
+                <div
+                    onClick={() => {
+                        handleClick();
+                    }}>
                     {
                         messageList.map((item, index) => (<Message handleImgLoaded={() => {
                             // 加载后刷新scroll对象
                             if (scroll) {
                                 scroll.current.refresh()
                                 const bscroll = scroll.current.getBScroll();
-                                if(bscroll){
-                                    bscroll.scrollTo(0,bscroll.maxScrollY)
+                                if (bscroll) {
+                                    bscroll.scrollTo(0, bscroll.maxScrollY)
                                 }
                             }
                         }
