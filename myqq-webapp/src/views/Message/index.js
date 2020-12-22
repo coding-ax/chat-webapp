@@ -9,14 +9,21 @@ import styled from 'styled-components'
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { actionCreator } from '../Chat/store'
+import Icon from '../../components/context/Icon'
 const FriendList = styled.div`
-
+    .show-box{
+        width:100%;
+        height:50vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        .desc-box{
+            color:#888;
+        }
+    }
 `
-// 通过该方法转换数据
-/**
- * 进行数据转换
- * @param {Array} unReadList
- */
+
 const Message = (props) => {
     // 设置state
     const [show, setShow] = useState(false);
@@ -59,7 +66,10 @@ const Message = (props) => {
                             setNickname(item.nickName)
                             setShow(true)
                         }}
-                    />))) : (<span>暂无消息</span>)
+                    />))) : (<div className="show-box">
+                        <Icon xlinkHref={"#icon-A"} size={"8rem"} />
+                        <div className="desc-box">暂时没有新消息噢</div>
+                    </div>)
                 }
             </FriendList>
 

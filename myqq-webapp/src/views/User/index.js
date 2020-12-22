@@ -29,7 +29,7 @@ const Config = (props) => {
     const { userInfo } = props;
     // history
     const { history } = props;
-    const { changeToken,clearUnReadMessageList } = props;
+    const { changeToken, clearUnReadMessageList } = props;
     // 连接后就马上请求信息
     useEffect(() => {
         if (socket) {
@@ -44,12 +44,12 @@ const Config = (props) => {
             {/**导航栏 */}
             <Nav>
                 <span onClick={() => {
-                    history.goBack();
                     localStorage.removeItem('token')
                     // 清除token
                     changeToken('')
                     // 清除unreadlist
                     clearUnReadMessageList();
+                    history.push('/')
                 }}> <Icon size={'1.5rem'} xlinkHref="#icon-houtui"></Icon></span>
                 <span>设置</span>
                 <span></span>
