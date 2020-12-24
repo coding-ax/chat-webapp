@@ -58,8 +58,27 @@ const Zoom = (props) => {
     const getDataByPage = () => {
         getZoomByPage(token, page + 1).then(res => {
             console.log(res)
+            const data = res.data
+            if (data.length) {
+                // 加进来
+                setPage(page + 1)
+                let testData = [...mockData];
+                console.log(data)
+                // 分段加
+                data.forEach(item => {
+                    testData.push({
+                        ...item,
+                        date: formatDate(item.date),
+                        content: {
+                            text: item.contentText,
+                            imgSrc: item.contentImgSrc.split(',')
+                        }
+                    })
+                })
+                setMockData(testData)
+            }
         })
-        setPage(page + 1)
+
     }
     // scroll
     const scroll = useRef(null)
@@ -82,7 +101,10 @@ const Zoom = (props) => {
             </Nav>
             {/**显示动态 */}
             <div className="wrapper">
-                <Scroll ref={scroll}>
+                {/**添加触底事件 */}
+                <Scroll ref={scroll} pullUp={() => {
+                    getDataByPage()
+                }}>
                     <div>
                         {
                             mockData.map(item => (<ZoomMessage
