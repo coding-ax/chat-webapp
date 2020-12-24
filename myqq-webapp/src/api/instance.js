@@ -1,8 +1,8 @@
 // 配置axios实例
 import axios from 'axios'
 const instance = axios.create({
-    // baseURL: 'http://localhost:7001',
-    baseURL: 'http://192.168.1.104:7001',
+    baseURL: 'http://localhost:7001',
+    // baseURL: 'http://192.168.1.104:7001',
     // baseURL: 'http://10.116.205.130:7001',
     timeout: 5000,
 })

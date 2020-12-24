@@ -17,11 +17,12 @@ module.exports = app => {
   router.post('/user/getInfoByID', app.jwt, controller.user.getInfoByUserID);
   // 图片上传 返回七牛云token
   router.get('/qiniutoken', app.jwt, controller.config.qiniuToken);
-  // 根据数组获取用户信息 参数users
+  // 返回zoom的数据
+  router.get('/zoom/getData', app.jwt, controller.zoom.getZoomByPage)
+  // 插入zoom的数据
+  router.post('/zoom/addZoom', app.jwt, controller.zoom.insertZoomMessage)
 
-  // app.io.of('/') 单人聊天处理器
-  // io.route('chat', io.controller.chat.chat);
-
+  // websocket:
   // 修改信息
   io.route('editUserDetail', io.controller.userEdit.editMessage);
 

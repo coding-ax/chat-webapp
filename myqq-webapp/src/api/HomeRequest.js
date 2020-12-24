@@ -24,3 +24,30 @@ export const file2qiniuCloud = async (selfToken, file) => {
     const response = await instance.post(apiURL, formData);
     return baseURL + response.key
 }
+
+// 获取zoom数据
+export const getZoomByPage = (token, page) => {
+    return instance.get('/zoom/getData', {
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
+        params: {
+            page
+        }
+    })
+}
+// 发布zoom
+export const pubZoom = (token, { contentText, contentImgSrc, userID }) => {
+    return instance({
+        method: 'POST',
+        url: '/zoom/addZoom',
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
+        data: {
+            contentText,
+            contentImgSrc,
+            userID
+        }
+    })
+}

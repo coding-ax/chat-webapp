@@ -3,7 +3,7 @@ const Service = require('egg').Service;
 const moment = require('moment')
 
 // 继承Service
-class Friends extends Service {
+class Message extends Service {
     MESSAGE_TABLE = 'p2p_message';
     /**
      *
@@ -135,4 +135,4 @@ class Friends extends Service {
     }
 
 }
-module.exports = Friends
+module.exports = Message

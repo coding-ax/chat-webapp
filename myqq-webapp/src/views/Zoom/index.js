@@ -1,9 +1,15 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Nav from '../../components/common/Nav'
 import ZoomMessage from '../../components/context/ZoomMessage'
 import Scroll from '../../components/common/Scroll'
 import styled from 'styled-components'
+import Transition from '../../components/common/Transition'
+import PubZoom from '../PubZoom'
 import Icon from '../../components/context/Icon'
+// 获取分页数据
+import { getZoomByPage } from '../../api/HomeRequest'
+// redux
+import { useSelector } from 'react-redux'
 const ZoomStyle = styled.div`
     .wrapper{
       position:absolute;
@@ -16,6 +22,15 @@ const ZoomStyle = styled.div`
 `
 
 const Zoom = (props) => {
+    // 打开发布
+    const [pub, setPub] = useState(false)
+    const token = useSelector(state => state.LoginReducer.token)
+    const page = useState(1);
+    useEffect(() => {
+        getZoomByPage(token, page).then(res => {
+            console.log(res)
+        })
+    }, [])
     const mockData = [
         {
             id: 1,
@@ -79,7 +94,9 @@ const Zoom = (props) => {
                 <span></span>
                 <span>Zoom</span>
                 <span>
-                    <span style={{position:"relative",left:'-1rem'}}>
+                    <span style={{ position: "relative", left: '-1rem' }} onClick={() => [
+                        setPub(true)
+                    ]}>
                         <Icon
                             xlinkHref={"#icon-add"}
                             size={'1.8rem'}
@@ -103,6 +120,12 @@ const Zoom = (props) => {
                     </div>
                 </Scroll>
             </div>
+            {/**发布页面 */}
+            <Transition show={pub} >
+                <PubZoom onExit={() => {
+                    setPub(false)
+                }}></PubZoom>
+            </Transition>
         </ZoomStyle>
     )
 }

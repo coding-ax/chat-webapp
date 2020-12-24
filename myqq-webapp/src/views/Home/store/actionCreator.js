@@ -46,7 +46,9 @@ export const userInfoChange = userInfo => {
 }
 // 设置朋友列表
 export const friendListChange = friendList => {
-    return dispatch => {
+    return (dispatch, state) => {
+        console.log(dispatch)
+        console.log(state())
         dispatch(changeFriendList(friendList))
     }
 }

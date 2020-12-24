@@ -1,9 +1,7 @@
 const Service = require('egg').Service;
-// 时间处理库
-const moment = require('moment')
 
 // 继承Service
-class Friends extends Service {
+class User extends Service {
     USER_TABLE = 'user'
     FRIEND_TABLE = 'friendship'
     USER_DETAIL = 'user_detail'
@@ -24,6 +22,6 @@ class Friends extends Service {
             data.push(friendDetail)
         }
         return data;
-    }   
+    }
 }
-module.exports = Friends
+module.exports = User
