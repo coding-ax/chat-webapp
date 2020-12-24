@@ -10,6 +10,8 @@ import Icon from '../../components/context/Icon'
 import { getZoomByPage } from '../../api/HomeRequest'
 // redux
 import { useSelector } from 'react-redux'
+// util
+import { formatDate } from '../../utils'
 const ZoomStyle = styled.div`
     .wrapper{
       position:absolute;
@@ -25,66 +27,40 @@ const Zoom = (props) => {
     // 打开发布
     const [pub, setPub] = useState(false)
     const token = useSelector(state => state.LoginReducer.token)
-    const page = useState(1);
+    const [page, setPage] = useState(1);
+    const [mockData, setMockData] = useState([])
+    // 初始化请求第一页
+    const getFirstPage = () => {
+        return new Promise(resolve => {
+            getZoomByPage(token, 1).then(res => {
+                res = res.data
+                console.log(res);
+                const resData = res.map(item => ({
+                    ...item,
+                    date: formatDate(item.date),
+                    content: {
+                        text: item.contentText,
+                        imgSrc: item.contentImgSrc.split(',')
+                    }
+                }))
+                setMockData(resData)
+                resolve(true)
+            })
+        })
+    }
+    // 执行一次
     useEffect(() => {
-        getZoomByPage(token, page).then(res => {
+        getFirstPage();
+        // eslint-disable-next-line
+    }, [])
+
+    // 请求后续
+    const getDataByPage = () => {
+        getZoomByPage(token, page + 1).then(res => {
             console.log(res)
         })
-    }, [])
-    const mockData = [
-        {
-            id: 1,
-            avator: 'https://xgpax.top/wp-content/uploads/2020/08/head.png',
-            nickName: 'ax',
-            date: new Date().toLocaleTimeString(),
-            content: {
-                text: "突然想起你，看了看自己突然想起你，看了看自己突然想起你，看了看自己突然想起你，看了看自己突然想起你，看了看自己突然想起你，看了看自己突然想起你，看了看自己",
-                imgSrc: ['https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg']
-            }
-        },
-        {
-            id: 2,
-            avator: 'https://xgpax.top/wp-content/uploads/2020/08/head.png',
-            nickName: 'ax',
-            date: new Date().toLocaleTimeString(),
-            content: {
-                text: "突然想起你，看了看自己",
-                imgSrc: ['https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3363295869,2467511306&fm=26&gp=0.jpg',
-                    'https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg',
-                    'https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg']
-            }
-        },
-        {
-            id: 3,
-            avator: 'https://xgpax.top/wp-content/uploads/2020/08/head.png',
-            nickName: 'ax',
-            date: new Date().toLocaleTimeString(),
-            content: {
-                text: "突然想起你，看了看自己",
-                imgSrc: ['https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg']
-            }
-        },
-        {
-            id: 4,
-            avator: 'https://xgpax.top/wp-content/uploads/2020/08/head.png',
-            nickName: 'ax',
-            date: new Date().toLocaleTimeString(),
-            content: {
-                text: "突然想起你，看了看自己",
-                imgSrc: ['https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg']
-            }
-        },
-        {
-            id: 5,
-            avator: 'https://xgpax.top/wp-content/uploads/2020/08/head.png',
-            nickName: 'ax',
-            date: new Date().toLocaleTimeString(),
-            content: {
-                text: "突然想起你，看了看自己",
-                imgSrc: ['https://xgpax.top/wp-content/uploads/2020/12/wp_editor_md_10df0de154bd5b6dded717f1beafbb1a.jpg']
-            }
-        }
-    ]
+        setPage(page + 1)
+    }
     // scroll
     const scroll = useRef(null)
     return (
@@ -115,6 +91,12 @@ const Zoom = (props) => {
                                 date={item.date}
                                 content={item.content}
                                 key={item.id}
+                                handleLoad={() => {
+                                    // 图片加载后刷新scroll
+                                    if (scroll) {
+                                        scroll.current.refresh();
+                                    }
+                                }}
                             />))
                         }
                     </div>
@@ -124,6 +106,18 @@ const Zoom = (props) => {
             <Transition show={pub} >
                 <PubZoom onExit={() => {
                     setPub(false)
+                    // 重新加载数据
+                    getFirstPage().then(() => {
+                        if (scroll.current.getBScroll) {
+                            const BScroll = scroll.current.getBScroll()
+                            // 到顶部
+                            if (BScroll) {
+                                BScroll.scrollTo(0, 0)
+                            }
+                        }
+                    })
+                    // 回归1
+                    setPage(1);
                 }}></PubZoom>
             </Transition>
         </ZoomStyle>

@@ -48,7 +48,8 @@ const ZoomMessageStyle = styled.div`
 `
 export const ZoomMessage = (props) => {
     const { avator, content, nickName, date } = props;
-
+    // 处理img加载
+    const { handleLoad = () => { } } = props;
     return (
         <ZoomMessageStyle>
             <div className='avator-box'>
@@ -66,7 +67,7 @@ export const ZoomMessage = (props) => {
                 </div>
                 {/**图片 */}
                 <div className="img-box">
-                    {content.imgSrc.map((item, index) => (<img key={index} src={item} alt="" />))}
+                    {content.imgSrc.map((item, index) => (<img key={index} src={item} alt="" onLoad={() => { handleLoad() }} />))}
                 </div>
             </div>
         </ZoomMessageStyle>
