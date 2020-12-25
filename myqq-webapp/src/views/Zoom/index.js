@@ -104,7 +104,19 @@ const Zoom = (props) => {
                 {/**添加触底事件 */}
                 <Scroll ref={scroll} pullUp={() => {
                     getDataByPage()
-                }}>
+                }}
+                    pullDown={() => {
+                        getFirstPage().then(() => {
+                            if (scroll.current.getBScroll) {
+                                const BScroll = scroll.current.getBScroll()
+                                // 到顶部
+                                if (BScroll) {
+                                    BScroll.scrollTo(0, 0)
+                                }
+                            }
+                        })
+                    }}
+                >
                     <div>
                         {
                             mockData.map(item => (<ZoomMessage
@@ -129,15 +141,17 @@ const Zoom = (props) => {
                 <PubZoom onExit={() => {
                     setPub(false)
                     // 重新加载数据
-                    getFirstPage().then(() => {
-                        if (scroll.current.getBScroll) {
-                            const BScroll = scroll.current.getBScroll()
-                            // 到顶部
-                            if (BScroll) {
-                                BScroll.scrollTo(0, 0)
+                    setTimeout(() => {
+                        getFirstPage().then(() => {
+                            if (scroll.current.getBScroll) {
+                                const BScroll = scroll.current.getBScroll()
+                                // 到顶部
+                                if (BScroll) {
+                                    BScroll.scrollTo(0, 0)
+                                }
                             }
-                        }
-                    })
+                        })
+                    }, 200);
                     // 回归1
                     setPage(1);
                 }}></PubZoom>

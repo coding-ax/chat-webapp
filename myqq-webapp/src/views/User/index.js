@@ -50,6 +50,10 @@ const Config = (props) => {
                     // 清除unreadlist
                     clearUnReadMessageList();
                     history.push('/')
+                    // 重载页面
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 500);
                 }}> <Icon size={'1.5rem'} xlinkHref="#icon-houtui"></Icon></span>
                 <span>设置</span>
                 <span></span>

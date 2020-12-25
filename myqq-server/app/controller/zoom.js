@@ -8,7 +8,7 @@ class ZoomController extends Controller {
     async getZoomByPage() {
         const { ctx } = this;
         // 获取page
-        const { page } = ctx.request.query['page']
+        const { page } = ctx.request.query
         const data = await ctx.service.zoom.getZoomMessageByPage(page);
         ctx.body = {
             data

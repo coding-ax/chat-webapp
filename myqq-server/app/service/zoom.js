@@ -14,9 +14,10 @@ class Zoom extends Service {
      */
     async getZoomMessageByPage(page) {
         const { app } = this;
+        page = parseInt(page)
         page < 0 ? page = 0 : null;
         // 根据page执行对应sql
-        const data = await app.mysql.query(`select * from ${this.ZOOM_TABLE} limit ?,?`, [(page - 1) * this.pageSize, page * this.pageSize])
+        const data = await app.mysql.query(`select * from ${this.ZOOM_TABLE} order by date desc limit ?,? `, [(page - 1) * this.pageSize, page * this.pageSize])
         return data;
     }
     /**
