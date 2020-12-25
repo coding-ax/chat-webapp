@@ -406,14 +406,86 @@ export { ChatReducer }
 
 2. clone完成后创建一个utf8,utf8_bin的myqq_server数据库：
 
-   ![image-20201225161321549](README.assets/image-20201225161321549.png)
-
 3. 打开myqq-server目录下的app目录 找到myqq_server.sql，在myqq_server数据库中运行该sql文件。
 
-4. 待运行完成后分别打开myqq-server目录和myqq-webapp目录，后端运行
+4. 待运行完成后分别打开myqq-server目录和myqq-webapp目录，
+
+   打开app目录下的config/config.default.js，将其中的mysql密码改为你自己的密码：
+
+   ```js
+   // mysql配置信息
+     config.mysql = {
+       // 单数据库信息配置
+       client: {
+         // host
+         host: '127.0.0.1',
+         // 端口号
+         port: '3306',
+         // 用户名
+         user: 'root',
+         // 密码
+         password: '123456',// 修改为你自己的
+         // 数据库名
+         database: 'myqq_server',
+       },
+       // 是否加载到 app 上，默认开启
+       app: true,
+       // 是否加载到 agent 上，默认关闭
+       agent: false,
+     };
+   ```
+
+   5.自己申请七牛云的对应对象存储空间（免费）在控制台找到自己的密钥和空间名称，还有对应的七牛云接口地址（我的是华南）申请后打开对应的myqq-server/app/controller/config.js
+
+   ```js
+   
+   const Controller = require('egg').Controller
+   const qiniu = require('qiniu')
+   class ConfigController extends Controller {
+       async qiniuToken() {
+           const { ctx } = this;
+           // 自己的七牛云accesskey和secretKey
+           const accessKey = ''
+           const secretKey = ''
+           const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+           // scope仓库名称(即命名空间) 从七牛云看
+           const options = {
+               scope: ''
+           }
+           const putPolicy = new qiniu.rs.PutPolicy(options)
+           const token = putPolicy.uploadToken(mac)
+           const key = '' + new Date() + Math.random().toString(16).slice(2);
+           const data = {
+               token,
+               key
+           }
+           ctx.body = {
+               code: 200,
+               status: "ok",
+               data
+           }
+       }
+   }
+   module.exports = ConfigController
+   ```
+
+   同时前端对应的myqq-webapp/src/api/HomeRequest.js：
+
+   ```js
+   const baseURL = 'https://img.xgpax.top/' //改为你自己的
+   const apiURL = 'http://upload-z2.qiniu.com' //改为对应的接口
+   ```
+
+   
+
+   后端运行
 
    ```shell
+   yarn
+   // or npm install
+   // 完成后
    yarn dev
+   // or npm run dev
    ```
 
    稍等一会即可在127.0.0.1:7001端口看到后端业务
@@ -421,7 +493,11 @@ export { ChatReducer }
    前端运行
 
    ```js
+   yarn
+   // OR npm install
+   // 完成后
    yarn start
+   // OR npm run start
    ```
 
    
@@ -443,3 +519,10 @@ export { ChatReducer }
 
 1. zoom部分对应后端开发  √
 2. 群聊对应部分开发
+
+其他
+
+1. 写后端eggjs相关的教程文章
+2. 总结开发过程，完善前端
+3. 对部分组件和思想进行详细的文章描述
+
