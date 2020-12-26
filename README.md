@@ -8,6 +8,8 @@
 
 如果您觉得对您有帮助，请您点个star支持一下！
 
+PS:**本项目未使用UI库,UI内容均为手写**
+
 ## 需求分析
 
 1. 注册登录 √
@@ -130,9 +132,6 @@ ps：**swiper**库存在一个**第一次加载无法滑动**的问题，这是�
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201225160101324.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODMxMDI3,size_16,color_FFFFFF,t_70)
 
-![image-20201225160159643](README.assets/image-20201225160159643.png)
-
-![image-20201225160150788](README.assets/image-20201225160150788.png)
 
 4. 个人信息
 
