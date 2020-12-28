@@ -5,12 +5,12 @@ class ConfigController extends Controller {
     async qiniuToken() {
         const { ctx } = this;
         // 自己的七牛云accesskey和secretKey
-        const accessKey = '5wrDkubE0EtcUSV_MBLorqXqC-aMIHFCpJCQI-v3'
-        const secretKey = 'mgdSJlppgWUnyZYNkbgwSH60cHsKo0TIjCOv29YY'
+        const accessKey = 'your accesskey'
+        const secretKey = 'your secretKey'
         const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
         // scope仓库名称
         const options = {
-            scope: 'the-pic'
+            scope: 'your zoom'
         }
         const putPolicy = new qiniu.rs.PutPolicy(options)
         const token = putPolicy.uploadToken(mac)
