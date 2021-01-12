@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 // 导入store相关
 import { actionCreator } from './store'
@@ -22,14 +22,16 @@ function Login(props) {
     const [toast, setToast] = useState(false);
     const [content, setContent] = useState('');
     // 设置错误提示事件
-    const changeToast = (content) => {
+    // 通过useCallback改写
+    const changeToast = useCallback((content) => {
         setContent(content)
         setToast(true)
         // 两秒后消失
         setTimeout(() => {
             setToast(false)
         }, 2000);
-    }
+    }, [setToast, setContent])
+
     // 从本地获取token
     useEffect(() => {
         const localToken = localStorage.getItem('token');
@@ -50,6 +52,7 @@ function Login(props) {
             })
         }
     }, [token, history])
+    
     // 中途出错的逻辑处理
     useEffect(() => {
         if (error) {
@@ -57,8 +60,9 @@ function Login(props) {
             // 重置
             changeIsError(false)
         }
-    }, [error, changeIsError, isLoginStatus])
-    // 监听注册成功
+    }, [error, changeIsError, isLoginStatus,changeToast])
+
+    // 注册成功
     useEffect(() => {
         if (register) {
             changeToast('恭喜你！ 注册成功！')
@@ -67,7 +71,7 @@ function Login(props) {
                 setIsLoginStatus(true);
             }, 500);
         }
-    }, [register, changeRegister])
+    }, [register, changeRegister,changeToast])
 
 
     return (

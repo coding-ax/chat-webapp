@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Nav from '../../components/common/Nav'
 import Icon from '../../components/context/Icon'
 import LoginInput from '../../components/common/LoginInput'
@@ -31,13 +31,13 @@ export const AddFriends = (props) => {
         // 此处用到了username但是仅作为判断标志 不需要作为hook依赖
         // eslint-disable-next-line
     }, [searchFriendList])
-    const showToast = (content) => {
+    const showToast = useCallback((content) => {
         setShow(true);
         setContent(content);
         setTimeout(() => {
             setShow(false)
         }, 1000);
-    }
+    }, [setShow, setContent])
     return (
         <div>
             <Nav>
@@ -69,7 +69,7 @@ export const AddFriends = (props) => {
                 {/**显示框 */}
                 <div >
                     {
-                        !searchFriendList.length&&(<div className='desc-word'>暂无结果,换个词搜搜看吧！</div>)
+                        !searchFriendList.length && (<div className='desc-word'>暂无结果,换个词搜搜看吧！</div>)
                     }
                     {
                         searchFriendList.map(item => (

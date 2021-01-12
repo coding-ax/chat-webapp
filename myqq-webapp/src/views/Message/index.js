@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 
 // 组件
 import Transition from '../../components/common/Transition'
@@ -31,12 +31,17 @@ const Message = (props) => {
     const [nickname, setNickname] = useState('')
     const dispatch = useDispatch();
     // 设置显示的数据
-    const fakeData = []
+
     const target = useSelector(store => store.ChatReducer.target)
     const unReadMessageList = useSelector(store => store.ChatReducer.unReadMessageList)
-    for (const item in unReadMessageList) {
-        fakeData.push(unReadMessageList[item])
-    }
+    // 修改为useMemo的data
+    const fakeData = useMemo(() => {
+        const data = []
+        for (const item in unReadMessageList) {
+            data.push(unReadMessageList[item])
+        }
+        return data
+    }, [unReadMessageList])
     // 获取当前聊天
     const messageList = useSelector(store => store.ChatReducer.messageList)
     return (

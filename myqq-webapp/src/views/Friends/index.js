@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 // 组件
 import Nav from '../../components/common/Nav'
 import Icon from '../../components/context/Icon'
@@ -30,14 +30,14 @@ const Friends = (props) => {
     // 设置当前操作地target的头像和昵称
     const [avator, setAvator] = useState('https://xgpax.top/wp-content/uploads/2020/11/defaultAvator.png')
     const [nickname, setNickname] = useState('')
-    // 定义setToast方法用于显示
-    const setToast = (content) => {
+    // 定义setToast方法用于显示 (useCallback重构)
+    const setToast = useCallback((content) => {
         setOpenToast(true);
         setContent(content)
         setTimeout(() => {
             setOpenToast(false)
         }, 1000);
-    }
+    }, [setOpenToast, setContent])
     // 获取朋友清单
     useEffect(() => {
         if (socket) {
@@ -134,7 +134,7 @@ const Friends = (props) => {
                     targetNickname={nickname}
                     onExit={() => {
                         setChat(false)
-                       // 退出就清除
+                        // 退出就清除
                         changeTarget('')
                     }}></Chat>
             </Transition>

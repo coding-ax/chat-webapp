@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import Input from '../../components/context/Input'
 import Nav from '../../components/common/Nav'
@@ -38,16 +38,19 @@ export const Chat = (props) => {
   // 分发
   const dispatch = useDispatch();
   // 针对messageList处理
-  const messageListAfterHandle = messageList.map(item => ({
-    ...item,
-    // 针对文字解码messageList
-    // eslint-disable-next-line
-    messageValue: item.messageType == "1" ? window.decodeURIComponent(window.atob(item.messageValue)) : item.messageValue,
-    date: formatDate(item.date),
-    type: item.recevier === target ? 1 : 2,
-    nickName: item.recevier === target ? nickName : targetNickname,
-    avator: item.recevier === target ? avator : targetAvator
-  }))
+  const messageListAfterHandle = useMemo(() => (
+    messageList.map(item => ({
+      ...item,
+      // 针对文字解码messageList
+      // eslint-disable-next-line
+      messageValue: item.messageType == "1" ? window.decodeURIComponent(window.atob(item.messageValue)) : item.messageValue,
+      date: formatDate(item.date),
+      type: item.recevier === target ? 1 : 2,
+      nickName: item.recevier === target ? nickName : targetNickname,
+      avator: item.recevier === target ? avator : targetAvator
+    }))
+    // eslint-disable-next-line 
+  ), [messageList])
   useEffect(() => {
     if (target) {
       // 获取聊天记录
