@@ -47,7 +47,7 @@ axios swiper better-scroll
 
 为保证体验，请打开F12，使用手机模式进行预览：
 
-预览地址：**http://47.102.212.191:7001/public/index.html**
+预览地址：**https://xgpax.top:7001/public/index.html**
 
 ### 如何双开预览
 
