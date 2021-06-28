@@ -17,7 +17,7 @@ export const ChatBox = (props) => {
     // 数据结构对象应该是 [{type:1||2?,nickName,date,messageValue,messageType,avator }]
     const { messageList = [] } = props;
     const { handleClick = () => { } } = props;
-    useEffect(() => {
+    const handleScrollBottom = () => {
         if (scroll) {
             const bscroll = scroll.current.getBScroll()
             if (bscroll) {
@@ -25,18 +25,20 @@ export const ChatBox = (props) => {
                 bscroll.scrollTo(0, bscroll.maxScrollY)
             }
         }
+    }
+    useEffect(() => {
+        handleScrollBottom();
     }, [messageList])
     // 监听键盘弹起
     useEffect(() => {
+        const handleResizeWindow = () => {
+            handleScrollBottom()
+        };
         // 保持弹起
-        window.onresize = () => {
-            if (scroll) {
-                const bscroll = scroll.current.getBScroll()
-                if (bscroll) {
-                    scroll.current.refresh()
-                    bscroll.scrollTo(0, bscroll.maxScrollY)
-                }
-            }
+        document.addEventListener('resize', handleResizeWindow)
+        // 新增清空resize
+        return () => {
+            document.removeEventListener('resize', handleResizeWindow)
         }
     })
     return (
@@ -49,13 +51,7 @@ export const ChatBox = (props) => {
                     {
                         messageList.map((item, index) => (<Message handleImgLoaded={() => {
                             // 加载后刷新scroll对象
-                            if (scroll) {
-                                scroll.current.refresh()
-                                const bscroll = scroll.current.getBScroll();
-                                if (bscroll) {
-                                    bscroll.scrollTo(0, bscroll.maxScrollY)
-                                }
-                            }
+                            handleScrollBottom();
                         }
                         }
                             type={item.type}
@@ -69,7 +65,6 @@ export const ChatBox = (props) => {
                 </div>
             </Scroll>
         </ChatBoxStyle>
-
     )
 }
 
