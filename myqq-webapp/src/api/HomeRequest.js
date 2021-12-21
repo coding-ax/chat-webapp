@@ -9,7 +9,7 @@ export const getQiniuToken = (token) => {
 }
 
 const baseURL = 'https://img.xgpax.top/'
-const apiURL = 'http://upload-z2.qiniu.com'
+const apiURL = 'https://upload-z2.qiniu.com'
 // selfToken:访问后端 file：要上传的文件（单个） 返回有效URL
 export const file2qiniuCloud = async (selfToken, file) => {
     const data = await getQiniuToken(selfToken)
