@@ -1,6 +1,6 @@
 import React from 'react'
 // 路由配置
-import { HashRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 import routes from './routes'
 // redux配置
