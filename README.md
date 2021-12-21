@@ -47,7 +47,7 @@ axios swiper better-scroll
 
 为保证体验，请打开F12，使用手机模式进行预览：
 
-预览地址：**https://xgpax.top:7001/public/index.html**
+预览地址：**https://myqq.xgpax.top/**
 
 ### 如何双开预览
 
@@ -409,7 +409,7 @@ export { ChatReducer }
 
 4. 待运行完成后分别打开myqq-server目录和myqq-webapp目录，
 
-   打开app目录下的config/config.default.js，将其中的mysql密码改为你自己的密码：
+   打开myqq-server目录下的config/config.default.js，将其中的mysql密码改为你自己的密码：
 
    ```js
    // mysql配置信息
