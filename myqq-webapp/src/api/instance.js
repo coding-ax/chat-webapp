@@ -1,7 +1,7 @@
 // 配置axios实例
 import axios from 'axios'
 const instance = axios.create({
-    baseURL: 'https://xgpax.top:7001',
+    baseURL: 'https://myqq.xgpax.top/api/',
     timeout: 5000,
 })
 // 配置响应拦截器

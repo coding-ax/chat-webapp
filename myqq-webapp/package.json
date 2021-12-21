@@ -13,7 +13,6 @@
     "dayjs": "^1.9.6",
     "emoji-mart": "^3.0.0",
     "immer": "^7.0.14",
-    "node-sass": "4.14.1",
     "prop-types": "^15.7.2",
     "qiniu-js": "^3.1.2",
     "react": "^17.0.1",
@@ -28,7 +27,7 @@
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^3.0.3",
     "styled-components": "^5.2.1",
-    "swiper": "^6.3.5",
+    "swiper": "6.8.4",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -56,6 +55,7 @@
     ]
   },
   "devDependencies": {
-    "react-app-rewired": "^2.1.8"
+    "react-app-rewired": "^2.1.8",
+    "sass": "^1.45.1"
   }
 }
