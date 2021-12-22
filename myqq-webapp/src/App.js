@@ -13,7 +13,7 @@ import SelfStyle from './globalStyle/selfStyle'
 import AnimationGo from './components/common/AnimationGo'
 
 const resize = () => {
-  window.location.reload()
+  // window.location.reload()
 };
 
 function App() {
