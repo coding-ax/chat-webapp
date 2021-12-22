@@ -84,6 +84,11 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    qiniuConfig: {
+      accessKey: 'your accessKey',
+      secretKey: 'your secretKey',
+      scope: 'your scope'
+    }
   };
 
 
