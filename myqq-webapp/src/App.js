@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // 路由配置
 import { BrowserRouter as Router } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
@@ -11,7 +11,18 @@ import NormalizeStyle from './globalStyle/normalize'
 import SelfStyle from './globalStyle/selfStyle'
 // 导入全局路由动画组件
 import AnimationGo from './components/common/AnimationGo'
+
+const resize = () => {
+  window.location.reload()
+};
+
 function App() {
+  useEffect(() => {
+    window.addEventListener('resize', resize)
+    return () => {
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
   return (
     <Provider store={store} >
       <SelfStyle />

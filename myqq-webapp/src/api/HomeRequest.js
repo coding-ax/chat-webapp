@@ -8,8 +8,8 @@ export const getQiniuToken = (token) => {
     })
 }
 
-const baseURL = 'https://img.xgpax.top/'
-const apiURL = 'https://upload-z2.qiniu.com'
+const baseURL = process.env.REACT_APP_IMG_PREFIX
+const apiURL = process.env.REACT_APP_QINIU_UPLOAD
 // selfToken:访问后端 file：要上传的文件（单个） 返回有效URL
 export const file2qiniuCloud = async (selfToken, file) => {
     const data = await getQiniuToken(selfToken)
@@ -21,7 +21,9 @@ export const file2qiniuCloud = async (selfToken, file) => {
     formData.append('key', key); // key：文件名，可以不传，如果不传七牛则会自动生成随机文件名 hash
     formData.append('file', file);
     // 上传
-    const response = await instance.post(apiURL, formData);
+    const response = await instance.post(apiURL, formData, {
+        timeout: 300 * 1000
+    });
     return baseURL + response.key
 }
 
