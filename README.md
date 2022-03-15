@@ -114,11 +114,9 @@ ps：**swiper**库存在一个**第一次加载无法滑动**的问题，这是�
 
    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201225155514539.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODMxMDI3,size_16,color_FFFFFF,t_70)
 
-   ![image-20201225155551976](README.assets/image-20201225155551976.png)
 
    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201225155637275.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODMxMDI3,size_16,color_FFFFFF,t_70)
 
-   ![image-20201225155657133](README.assets/image-20201225155657133.png)
 
    聊天使用了better-scroll 可以较为灵活的实现图片的滑动，另外使用了emoji-mart库作为表情包的提供，支持发送emoji哦
 
